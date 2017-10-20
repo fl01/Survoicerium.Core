@@ -1,0 +1,15 @@
+version: '3'
+services:
+    rabbitmq:
+        image: rabbitmq:management
+        volumes:
+          - ./init/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
+          - ./init/rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config:ro
+        ports:
+          - "15672:15672"
+          - "5672:5672"
+        networks:
+          - survoicerium
+networks:
+  betcore:
+    driver: bridge

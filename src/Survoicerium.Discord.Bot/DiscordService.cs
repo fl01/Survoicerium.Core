@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
+using Survoicerium.Discord.Bot.ApiClient;
+using Survoicerium.Messaging;
+using Survoicerium.Messaging.Events;
 
 namespace Survoicerium.Discord.Bot
 {
@@ -9,10 +13,23 @@ namespace Survoicerium.Discord.Bot
     {
         private DiscordSocketClient _client;
         private readonly string _token;
+        private readonly BackendApiClient _apiClient;
 
-        public DiscordService(string token)
+        public const ulong DefaultDiscordChannel = 370681552679469056;
+
+        public DiscordService(string token, BackendApiClient apiClient, IEventChannel eventChannel)
         {
             _token = token;
+            _apiClient = apiClient;
+
+            eventChannel.On<PingEvent>(OnPingEventReceived);
+        }
+
+        private async void OnPingEventReceived(object args)
+        {
+            var ping = args as PingEvent;
+            var guestChannel = _client.GroupChannels.FirstOrDefault(s => s.Id == DefaultDiscordChannel);
+            await guestChannel.SendMessageAsync($"Received: '{ping.Message}'");
         }
 
         public async Task ConnectAsync()

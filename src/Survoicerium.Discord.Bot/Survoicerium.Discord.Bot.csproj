@@ -9,4 +9,9 @@
     <PackageReference Include="Discord.Net" Version="1.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Survoicerium.Messaging.RabbitMq\Survoicerium.Messaging.RabbitMq.csproj" />
+    <ProjectReference Include="..\Survoicerium.Messaging\Survoicerium.Messaging.csproj" />
+  </ItemGroup>
+
 </Project>
