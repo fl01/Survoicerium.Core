@@ -11,5 +11,5 @@ services:
         networks:
           - survoicerium
 networks:
-  betcore:
+  survoicerium:
     driver: bridge

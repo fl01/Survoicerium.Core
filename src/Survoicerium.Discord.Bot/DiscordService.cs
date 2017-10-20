@@ -16,6 +16,7 @@ namespace Survoicerium.Discord.Bot
         private readonly BackendApiClient _apiClient;
 
         public const ulong DefaultDiscordChannel = 370681552679469056;
+        public const ulong DefaultServerId = 370680552334032897;
 
         public DiscordService(string token, BackendApiClient apiClient, IEventChannel eventChannel)
         {
@@ -27,9 +28,14 @@ namespace Survoicerium.Discord.Bot
 
         private async void OnPingEventReceived(object args)
         {
-            var ping = args as PingEvent;
-            var guestChannel = _client.GroupChannels.FirstOrDefault(s => s.Id == DefaultDiscordChannel);
-            await guestChannel.SendMessageAsync($"Received: '{ping.Message}'");
+            if (_client.LoginState != LoginState.LoggedIn)
+            {
+                return;
+            }
+
+            // TODO : should be cached etc...
+            var guestChannel = _client.Guilds.FirstOrDefault(s => s.Id == DefaultServerId).GetTextChannel(DefaultDiscordChannel);
+            await guestChannel?.SendMessageAsync($"Received: '{(args as PingEvent).Message}'");
         }
 
         public async Task ConnectAsync()

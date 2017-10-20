@@ -17,4 +17,9 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Survoicerium.Messaging.RabbitMq\Survoicerium.Messaging.RabbitMq.csproj" />
+    <ProjectReference Include="..\Survoicerium.Messaging\Survoicerium.Messaging.csproj" />
+  </ItemGroup>
+
 </Project>

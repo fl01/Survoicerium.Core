@@ -32,7 +32,7 @@ namespace Survoicerium.Messaging.RabbitMq
             var connection = connectionFactory.CreateConnection();
             connection.ConnectionShutdown += ConnectionShutdown;
             _channel = connection.CreateModel();
-            _channel.ExchangeDeclare(ExchangeName, ExchangeType.Topic, false);
+            _channel.ExchangeDeclare(ExchangeName, ExchangeType.Topic, true);
         }
 
         protected void SendInternal(T body, string messageId, [CallerMemberName]string callerName = "")

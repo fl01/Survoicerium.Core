@@ -16,6 +16,7 @@ namespace Survoicerium.Discord.Bot
             var apiClient = new BackendApiClient(Guid.NewGuid(), "http://localhost");
             var config = apiClient.GetConfiguration();
             var eventChannel = new RabbitMqEventChannel(config.Host, config.User, config.Password, new JsonSerializer(), RabbitMqConsts.GenericEventQueueName);
+            eventChannel.Start();
             var svc = new DiscordService("MzcwOTg4NTM1NDI1MjY5NzYy.DMvJCQ.ZTz5a5kRdOtMshSXROJrPiAb-Ec", apiClient, eventChannel);
 
             await svc.ConnectAsync();
