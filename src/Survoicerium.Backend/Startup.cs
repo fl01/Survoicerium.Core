@@ -24,7 +24,6 @@ namespace Survoicerium.Backend
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseHealthCheck("/health");
-
             app.UseMvc();
         }
     }
