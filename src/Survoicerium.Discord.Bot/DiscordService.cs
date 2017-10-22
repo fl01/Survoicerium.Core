@@ -51,6 +51,11 @@ namespace Survoicerium.Discord.Bot
         private async void OnJoinedGameEventReceived(OnJoinedGameEvent args)
         {
             await DefaultTextChannel.SendMessageAsync($"Received join game '{args.GameHash}' for player '{args.UserId}'");
+
+            if (!DefaultServer.VoiceChannels.Any(v => string.Equals(v.Name, args.GameHash)))
+            {
+                var channel = await DefaultServer.CreateVoiceChannelAsync(args.GameHash);
+            }
         }
 
         private async void OnPingEventReceived(PingEvent args)
