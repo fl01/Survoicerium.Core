@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survoicerium.Discord.Bot", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survoicerium.Messaging", "Survoicerium.Messaging\Survoicerium.Messaging.csproj", "{86472C40-429C-4C73-B517-B7D709ACA8B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Survoicerium.Messaging.RabbitMq", "Survoicerium.Messaging.RabbitMq\Survoicerium.Messaging.RabbitMq.csproj", "{FE9D359F-081F-4F3F-9B31-E98E21C82306}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survoicerium.Messaging.RabbitMq", "Survoicerium.Messaging.RabbitMq\Survoicerium.Messaging.RabbitMq.csproj", "{FE9D359F-081F-4F3F-9B31-E98E21C82306}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Survoicerium.Frontend", "Survoicerium.Frontend\Survoicerium.Frontend.csproj", "{E36D12F9-EC4B-4984-8DEF-B1121A483A0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{FE9D359F-081F-4F3F-9B31-E98E21C82306}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE9D359F-081F-4F3F-9B31-E98E21C82306}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE9D359F-081F-4F3F-9B31-E98E21C82306}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E36D12F9-EC4B-4984-8DEF-B1121A483A0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E36D12F9-EC4B-4984-8DEF-B1121A483A0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E36D12F9-EC4B-4984-8DEF-B1121A483A0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E36D12F9-EC4B-4984-8DEF-B1121A483A0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
