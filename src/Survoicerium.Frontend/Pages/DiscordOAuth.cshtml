@@ -1,0 +1,12 @@
+﻿@page
+@model Survoicerium.Frontend.Pages.DiscordOAuthModel
+@{
+    ViewData["Title"] = "DiscordOAuth";
+}
+
+<h2>DiscordOAuth</h2>
+
+<h3>@Model.Token</h3>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
