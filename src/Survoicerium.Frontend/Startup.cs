@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Survoicerium.Frontend.Configuration;
 
 namespace Survoicerium.Frontend
 {
@@ -16,6 +17,9 @@ namespace Survoicerium.Frontend
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services
+                .Configure<DiscordOAuth>(Configuration.GetSection(nameof(DiscordOAuth)));
+
             services.AddMvc();
         }
 

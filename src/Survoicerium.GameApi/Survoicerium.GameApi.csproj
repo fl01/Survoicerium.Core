@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Survoicerium.Core\Survoicerium.Core.csproj" />
     <ProjectReference Include="..\Survoicerium.Messaging.RabbitMq\Survoicerium.Messaging.RabbitMq.csproj" />
     <ProjectReference Include="..\Survoicerium.Messaging\Survoicerium.Messaging.csproj" />
   </ItemGroup>

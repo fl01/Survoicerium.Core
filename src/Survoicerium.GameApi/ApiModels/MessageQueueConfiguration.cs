@@ -1,4 +1,4 @@
-﻿namespace Survoicerium.Backend.ApiModels
+﻿namespace Survoicerium.GameApi.ApiModels
 {
     public class MessageQueueConfiguration
     {

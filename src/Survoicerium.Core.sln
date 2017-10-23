@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survoicerium.Backend", "Survoicerium.Backend\Survoicerium.Backend.csproj", "{5FBCC2E1-CEB6-489A-BB35-509BBC6997A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survoicerium.GameApi", "Survoicerium.GameApi\Survoicerium.GameApi.csproj", "{5FBCC2E1-CEB6-489A-BB35-509BBC6997A2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survoicerium.Discord.Bot", "Survoicerium.Discord.Bot\Survoicerium.Discord.Bot.csproj", "{06D1577F-9A7C-4ADE-95E6-377653BA489E}"
 EndProject
@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survoicerium.Messaging", "S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survoicerium.Messaging.RabbitMq", "Survoicerium.Messaging.RabbitMq\Survoicerium.Messaging.RabbitMq.csproj", "{FE9D359F-081F-4F3F-9B31-E98E21C82306}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Survoicerium.Frontend", "Survoicerium.Frontend\Survoicerium.Frontend.csproj", "{E36D12F9-EC4B-4984-8DEF-B1121A483A0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survoicerium.Frontend", "Survoicerium.Frontend\Survoicerium.Frontend.csproj", "{E36D12F9-EC4B-4984-8DEF-B1121A483A0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Survoicerium.IdentityServer", "Survoicerium.IdentityServer\Survoicerium.IdentityServer.csproj", "{85277CAC-3C0B-4E9F-B3C9-398D683232B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survoicerium.Infrastructure.Mongo", "Survoicerium.Infrastructure.Mongo\Survoicerium.Infrastructure.Mongo.csproj", "{DE9AFB60-8A94-4D45-A45B-6299F91CB1E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Survoicerium.Core", "Survoicerium.Core\Survoicerium.Core.csproj", "{36DD90C2-3388-4DFF-B195-0593ED167FA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +43,14 @@ Global
 		{E36D12F9-EC4B-4984-8DEF-B1121A483A0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E36D12F9-EC4B-4984-8DEF-B1121A483A0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E36D12F9-EC4B-4984-8DEF-B1121A483A0F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{85277CAC-3C0B-4E9F-B3C9-398D683232B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{85277CAC-3C0B-4E9F-B3C9-398D683232B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{85277CAC-3C0B-4E9F-B3C9-398D683232B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{85277CAC-3C0B-4E9F-B3C9-398D683232B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE9AFB60-8A94-4D45-A45B-6299F91CB1E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE9AFB60-8A94-4D45-A45B-6299F91CB1E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE9AFB60-8A94-4D45-A45B-6299F91CB1E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE9AFB60-8A94-4D45-A45B-6299F91CB1E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36DD90C2-3388-4DFF-B195-0593ED167FA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36DD90C2-3388-4DFF-B195-0593ED167FA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36DD90C2-3388-4DFF-B195-0593ED167FA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36DD90C2-3388-4DFF-B195-0593ED167FA0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

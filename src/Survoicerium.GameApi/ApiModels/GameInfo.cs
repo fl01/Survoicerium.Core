@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Survoicerium.Backend.ApiModels
+namespace Survoicerium.GameApi.ApiModels
 {
     public class GameInfo
     {
@@ -11,6 +11,6 @@ namespace Survoicerium.Backend.ApiModels
         public string HardwareId { get; set; }
 
         [Required]
-        public string Token { get; set; }
+        public string ApiKey { get; set; }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Mvc;
-using Survoicerium.Backend.ApiModels;
+using Survoicerium.GameApi.ApiModels;
 
-namespace Survoicerium.Backend.Controllers
+namespace Survoicerium.GameApi.Controllers
 {
     public class ConfigurationController : Controller
     {

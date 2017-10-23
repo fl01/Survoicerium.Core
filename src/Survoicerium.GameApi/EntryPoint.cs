@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Survoicerium.Backend
+namespace Survoicerium.GameApi
 {
     public class EntryPoint
     {

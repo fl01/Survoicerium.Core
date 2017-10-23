@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Survoicerium.IdentityServer.Controllers
 {
-    public class ValuesController : Controller
+    [Authorize]
+    public class UsersController : Controller
     {
         [HttpGet("api/me")]
-        public IEnumerable<string> GetMe()
+        public IActionResult GetMe()
         {
-            return new string[] { "value1", "value2" };
+            return Ok();
         }
     }
 }
