@@ -3,8 +3,18 @@
 @{
     ViewData["Title"] = "Api key";
 }
-
-<h1>Discord User Id: @Model.DiscordUserId</h1>
+@{ if (string.IsNullOrEmpty(@Model.ErrorMessage))
+    {
+        <h1>Your api key is meant to be <b>SECRET</b></h1>
+        <h1>It is the way by which your <b>voice client</b> authenticates with our system. Revealing your api key is like putting your password on the internet, and anyone that gets this api key can do stuff on your behalf</h1>
+        <br />
+        <h1>Key: <b>@Model.ApiKey</b></h1>
+    }
+    else
+    {
+        <h1>@Model.ErrorMessage</h1>
+    }
+}
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

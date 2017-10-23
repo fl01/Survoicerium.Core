@@ -9,4 +9,9 @@
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Survoicerium.Core\Survoicerium.Core.csproj" />
+    <ProjectReference Include="..\Survoicerium.Discord.ApiClient\Survoicerium.Discord.ApiClient.csproj" />
+    <ProjectReference Include="..\Survoicerium.Infrastructure.Mongo\Survoicerium.Infrastructure.Mongo.csproj" />
+  </ItemGroup>
 </Project>

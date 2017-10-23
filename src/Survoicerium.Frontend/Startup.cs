@@ -2,7 +2,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Survoicerium.Discord.ApiClient;
+using Survoicerium.Discord.ApiClient.Http;
 using Survoicerium.Frontend.Configuration;
+using Survoicerium.Infrastructure.Mongo;
 
 namespace Survoicerium.Frontend
 {
@@ -18,6 +22,12 @@ namespace Survoicerium.Frontend
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .RegisterApiService("mongodb://localhost:27017")
+                .AddScoped<DiscordApiClient>(builder =>
+                {
+                    var settings = builder.GetRequiredService<IOptions<DiscordOAuth>>().Value;
+                    return new DiscordApiClient(new SimpleHttpClient(), settings.ClientId, settings.ClientSecret);
+                })
                 .Configure<DiscordOAuth>(Configuration.GetSection(nameof(DiscordOAuth)));
 
             services.AddMvc();

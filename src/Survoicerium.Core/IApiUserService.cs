@@ -1,11 +1,12 @@
-﻿using Survoicerium.Core.Dto;
+﻿using System.Threading.Tasks;
+using Survoicerium.Core.Dto;
 
 namespace Survoicerium.Core
 {
     public interface IApiUserService
     {
-        IApiUser Add(AddUserDto addUserDto);
-        
+        Task<IApiUser> AddAsync(AddUserDto addUserDto);
+
         IApiUser GetUserByHardwareId(string hardwareId);
 
         bool IsValidApiKey(string apiKey);

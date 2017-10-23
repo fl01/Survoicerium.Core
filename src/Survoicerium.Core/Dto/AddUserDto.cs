@@ -4,6 +4,8 @@
     {
         public string HardwareId { get; set; }
 
+        public string Code { get; set; }
+
         public ulong DiscordUserId { get; set; }
     }
 }
