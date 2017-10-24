@@ -1,3 +1,4 @@
+using AspNetCore.Health;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +22,8 @@ namespace Survoicerium.Frontend
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHealthChecks(context => context.AddUrlCheck("https://google.com"));
+
             services
                 .RegisterApiService("mongodb://localhost:27017")
                 .AddScoped<DiscordApiClient>(builder =>
@@ -36,6 +39,7 @@ namespace Survoicerium.Frontend
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseStaticFiles();
+            app.UseHealthCheck("/health");
 
             app.UseMvc(routes =>
             {
