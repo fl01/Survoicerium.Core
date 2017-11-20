@@ -7,6 +7,7 @@ using Discord.WebSocket;
 using Survoicerium.Discord.Bot.ApiClient;
 using Survoicerium.Messaging;
 using Survoicerium.Messaging.Events;
+using Discord.Rest;
 
 namespace Survoicerium.Discord.Bot
 {
@@ -15,6 +16,7 @@ namespace Survoicerium.Discord.Bot
         private DiscordSocketClient _client;
         private readonly string _token;
         private readonly BackendApiClient _apiClient;
+        private readonly object _getChannelLock = new object();
 
         public const ulong DefaultDiscordChannel = 370681552679469056;
         public const ulong DefaultServerId = 370680552334032897;
@@ -50,11 +52,19 @@ namespace Survoicerium.Discord.Bot
 
         private async void OnJoinedGameEventReceived(OnJoinedGameEvent args)
         {
-            await DefaultTextChannel.SendMessageAsync($"Received join game '{args.GameHash}' for player '{args.UserId}'");
+            await DefaultTextChannel.SendMessageAsync($"Received join game '{args.ChannelId}' for player '{args.VoiceUserId}'");
 
-            if (!DefaultServer.VoiceChannels.Any(v => string.Equals(v.Name, args.GameHash)))
+            ulong channelId = 0;
+            lock (_getChannelLock)
             {
-                var channel = await DefaultServer.CreateVoiceChannelAsync(args.GameHash);
+                channelId = DefaultServer.VoiceChannels.FirstOrDefault(v => string.Equals(v.Name, args.ChannelId, StringComparison.OrdinalIgnoreCase))?.Id
+                    ?? DefaultServer.CreateVoiceChannelAsync(args.ChannelId).GetAwaiter().GetResult().Id;
+            }
+
+            var user = DefaultServer.GetUser(args.VoiceUserId);
+            if (user != null)
+            {
+                await user.ModifyAsync(x => x.Channel = DefaultServer.GetVoiceChannel(channelId));
             }
         }
 

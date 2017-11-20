@@ -48,7 +48,7 @@ namespace Survoicerium.Frontend.Pages
                 return;
             }
 
-            IApiUser apiUser = _apiUserService.GetUserByHardwareId(state);
+            IApiUser apiUser = _apiUserService.GetUserByHardwareIdAsync(state).GetAwaiter().GetResult();
             if (apiUser != null)
             {
                 ApiKey = apiUser.ApiKey;

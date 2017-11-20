@@ -7,7 +7,9 @@ namespace Survoicerium.Core
     {
         Task<IApiUser> AddAsync(AddUserDto addUserDto);
 
-        IApiUser GetUserByHardwareId(string hardwareId);
+        Task<IApiUser> GetUserByHardwareIdAsync(string hardwareId);
+
+        Task<IApiUser> GetUserByApiKeyAsync(string apiKey);
 
         bool IsValidApiKey(string apiKey);
     }

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Survoicerium.Core;
+using Survoicerium.Core.Dto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Survoicerium.Core;
-using Survoicerium.Core.Dto;
 
 namespace Survoicerium.Infrastructure.Mongo
 {
@@ -48,11 +48,18 @@ namespace Survoicerium.Infrastructure.Mongo
             return apiUser;
         }
 
-        public IApiUser GetUserByHardwareId(string hardwareId)
+        public Task<IApiUser> GetUserByHardwareIdAsync(string hardwareId)
         {
             var existing = _users.FirstOrDefault(u => u.Value.HardwareIds.Contains(hardwareId));
 
-            return existing.Value;
+            return Task.FromResult<IApiUser>(existing.Value);
+        }
+
+        public Task<IApiUser> GetUserByApiKeyAsync(string apiKey)
+        {
+            var existing = _users.FirstOrDefault(u => string.Equals(apiKey, u.Value.ApiKey, StringComparison.OrdinalIgnoreCase));
+
+            return Task.FromResult<IApiUser>(existing.Value);
         }
 
         public bool IsValidApiKey(string apiKey)

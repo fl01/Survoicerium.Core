@@ -1,13 +1,9 @@
-﻿using System;
-
-namespace Survoicerium.Messaging.Events
+﻿namespace Survoicerium.Messaging.Events
 {
     public class OnJoinedGameEvent : Event
     {
-        public long UserId { get; set; }
+        public ulong VoiceUserId { get; set; }
 
-        public string GameHash { get; set; }
-
-        public TimeSpan RoomLifetime { get; set; }
+        public string ChannelId { get; set; }
     }
 }
