@@ -7,7 +7,7 @@ namespace Survoicerium.Core
     {
         public long Expiry { get; set; }
 
-        public string Id { get; set; }
+        public string Name { get; set; }
 
         public ICollection<IApiUser> Users { get; set; } = new List<IApiUser>();
     }

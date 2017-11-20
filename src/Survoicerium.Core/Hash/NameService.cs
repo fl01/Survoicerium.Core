@@ -4,18 +4,18 @@ using System.Text;
 
 namespace Survoicerium.Core.Hash
 {
-    public class HashService : IHashService
+    public class NameService : INameService
     {
         public const string Entropy = "KQ324A@#!ndg";
 
-        public string GetHash(string text)
+        public string GetChannelName(string channelId)
         {
             var stringResult = new StringBuilder();
 
             using (var hash = SHA256.Create())
             {
                 Encoding enc = Encoding.UTF8;
-                Byte[] result = hash.ComputeHash(enc.GetBytes($"{text}{Entropy}"));
+                Byte[] result = hash.ComputeHash(enc.GetBytes($"{channelId}{Entropy}"));
 
                 foreach (Byte b in result)
                 {

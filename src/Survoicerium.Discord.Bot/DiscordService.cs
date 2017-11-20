@@ -29,8 +29,9 @@ namespace Survoicerium.Discord.Bot
             _token = token;
             _apiClient = apiClient;
 
-            eventChannel.On<PingEvent>(x => HandleIfReady((PingEvent)x, OnPingEventReceived));
-            eventChannel.On<OnJoinedGameEvent>(x => HandleIfReady((OnJoinedGameEvent)x, OnJoinedGameEventReceived));
+            eventChannel.On<PingEvent>(x => HandleIfReady<PingEvent>(x, OnPingEventReceived));
+            eventChannel.On<OnJoinedGameEvent>(x => HandleIfReady<OnJoinedGameEvent>(x, OnJoinedGameEventReceived));
+            eventChannel.On<OnChannelExpiredEvent>(x => HandleIfReady<OnChannelExpiredEvent>(x, OnChannelExpiredReceived));
         }
 
         public async Task ConnectAsync()
@@ -52,13 +53,13 @@ namespace Survoicerium.Discord.Bot
 
         private async void OnJoinedGameEventReceived(OnJoinedGameEvent args)
         {
-            await DefaultTextChannel.SendMessageAsync($"Received join game '{args.ChannelId}' for player '{args.VoiceUserId}'");
+            await DefaultTextChannel.SendMessageAsync($"Received join game '{args.ChannelName}' for player '{args.VoiceUserId}'");
 
             ulong channelId = 0;
             lock (_getChannelLock)
             {
-                channelId = DefaultServer.VoiceChannels.FirstOrDefault(v => string.Equals(v.Name, args.ChannelId, StringComparison.OrdinalIgnoreCase))?.Id
-                    ?? DefaultServer.CreateVoiceChannelAsync(args.ChannelId).GetAwaiter().GetResult().Id;
+                channelId = DefaultServer.VoiceChannels.FirstOrDefault(v => string.Equals(v.Name, args.ChannelName, StringComparison.OrdinalIgnoreCase))?.Id
+                    ?? DefaultServer.CreateVoiceChannelAsync(args.ChannelName).GetAwaiter().GetResult().Id;
             }
 
             var user = DefaultServer.GetUser(args.VoiceUserId);
@@ -73,14 +74,25 @@ namespace Survoicerium.Discord.Bot
             await DefaultTextChannel.SendMessageAsync($"Received: '{args.Message}'");
         }
 
-        private void HandleIfReady<T>(T item, Action<T> handler)
+        private async void OnChannelExpiredReceived(OnChannelExpiredEvent args)
+        {
+            await DefaultTextChannel.SendMessageAsync($"Channel '{args.ChannelName}' is expired and should be deleted");
+            var channel = DefaultServer.VoiceChannels.FirstOrDefault(v => string.Equals(args.ChannelName, v.Name, StringComparison.OrdinalIgnoreCase));
+            if (channel != null)
+            {
+                await channel.DeleteAsync();
+            }
+        }
+
+        private void HandleIfReady<T>(object item, Action<T> handler)
+            where T : class
         {
             if (_client.LoginState != LoginState.LoggedIn)
             {
                 return;
             }
 
-            handler(item);
+            handler(item as T);
         }
 
         private async Task MessageReceived(SocketMessage message)
