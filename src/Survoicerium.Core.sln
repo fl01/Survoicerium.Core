@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survoicerium.GameApi", "Survoicerium.GameApi\Survoicerium.GameApi.csproj", "{5FBCC2E1-CEB6-489A-BB35-509BBC6997A2}"
 EndProject
@@ -15,9 +15,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survoicerium.Frontend", "Su
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survoicerium.Infrastructure.Mongo", "Survoicerium.Infrastructure.Mongo\Survoicerium.Infrastructure.Mongo.csproj", "{DE9AFB60-8A94-4D45-A45B-6299F91CB1E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Survoicerium.Core", "Survoicerium.Core\Survoicerium.Core.csproj", "{36DD90C2-3388-4DFF-B195-0593ED167FA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survoicerium.Core", "Survoicerium.Core\Survoicerium.Core.csproj", "{36DD90C2-3388-4DFF-B195-0593ED167FA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Survoicerium.Discord.ApiClient", "Survoicerium.Discord.ApiClient\Survoicerium.Discord.ApiClient.csproj", "{09C7000F-D117-4D53-89E8-CB0E60C4C625}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survoicerium.Discord.ApiClient", "Survoicerium.Discord.ApiClient\Survoicerium.Discord.ApiClient.csproj", "{09C7000F-D117-4D53-89E8-CB0E60C4C625}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Survoicerium.InternalConfigurationApiClient", "Survoicerium.InternalConfigurationApiClient\Survoicerium.InternalConfigurationApiClient.csproj", "{76F21F70-DF7B-45E4-9197-6CF8D82F0934}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Internal", "Internal", "{0CC75BB4-4170-41CE-94A5-2E322DBB3BE3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,9 +61,16 @@ Global
 		{09C7000F-D117-4D53-89E8-CB0E60C4C625}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09C7000F-D117-4D53-89E8-CB0E60C4C625}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09C7000F-D117-4D53-89E8-CB0E60C4C625}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76F21F70-DF7B-45E4-9197-6CF8D82F0934}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76F21F70-DF7B-45E4-9197-6CF8D82F0934}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76F21F70-DF7B-45E4-9197-6CF8D82F0934}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76F21F70-DF7B-45E4-9197-6CF8D82F0934}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{76F21F70-DF7B-45E4-9197-6CF8D82F0934} = {0CC75BB4-4170-41CE-94A5-2E322DBB3BE3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DDB19C93-C6CA-49B0-B1CF-8A9F055EA463}

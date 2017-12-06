@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Survoicerium.InternalConfigurationApiClient\Survoicerium.InternalConfigurationApiClient.csproj" />
     <ProjectReference Include="..\Survoicerium.Messaging.RabbitMq\Survoicerium.Messaging.RabbitMq.csproj" />
     <ProjectReference Include="..\Survoicerium.Messaging\Survoicerium.Messaging.csproj" />
   </ItemGroup>

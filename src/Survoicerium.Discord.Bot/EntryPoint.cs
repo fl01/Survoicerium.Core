@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Survoicerium.Discord.Bot.ApiClient;
+using Survoicerium.InternalConfigurationApiClient;
 using Survoicerium.Messaging.RabbitMq;
 using Survoicerium.Messaging.Serialization;
 
@@ -13,11 +13,12 @@ namespace Survoicerium.Discord.Bot
 
         public async Task MainAsync()
         {
-            var apiClient = new BackendApiClient(Guid.NewGuid(), "http://localhost");
-            var config = apiClient.GetConfiguration();
-            var eventChannel = new RabbitMqEventChannel(config.Host, config.User, config.Password, new JsonSerializer(), RabbitMqConsts.GenericEventQueueName);
-            eventChannel.Start();
-            var svc = new DiscordService("MzcwOTg4NTM1NDI1MjY5NzYy.DMvJCQ.ZTz5a5kRdOtMshSXROJrPiAb-Ec", apiClient, eventChannel);
+            var configClient = InternalConfigurationApiClientFactory.Create("http://localhost:5100", TimeSpan.FromSeconds(5), 5);
+            var systemConfig = await configClient.GetConfigurationAsync();
+
+            var eventChannel = new RabbitMqEventChannel(systemConfig.MessageQueue.Host, systemConfig.MessageQueue.User, systemConfig.MessageQueue.Password, new JsonSerializer(), RabbitMqConsts.GenericEventQueueName);
+            //eventChannel.Start();
+            var svc = new DiscordService(systemConfig.DiscordBot.ApiKey, eventChannel);
 
             await svc.ConnectAsync();
             await Task.Delay(-1);

@@ -4,10 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
-using Survoicerium.Discord.Bot.ApiClient;
 using Survoicerium.Messaging;
 using Survoicerium.Messaging.Events;
-using Discord.Rest;
 
 namespace Survoicerium.Discord.Bot
 {
@@ -15,7 +13,6 @@ namespace Survoicerium.Discord.Bot
     {
         private DiscordSocketClient _client;
         private readonly string _token;
-        private readonly BackendApiClient _apiClient;
         private readonly object _getChannelLock = new object();
 
         public const ulong DefaultDiscordChannel = 370681552679469056;
@@ -24,10 +21,9 @@ namespace Survoicerium.Discord.Bot
         private SocketTextChannel DefaultTextChannel { get; set; }
         private SocketGuild DefaultServer { get; set; }
 
-        public DiscordService(string token, BackendApiClient apiClient, IEventChannel eventChannel)
+        public DiscordService(string token, IEventChannel eventChannel)
         {
             _token = token;
-            _apiClient = apiClient;
 
             eventChannel.On<PingEvent>(x => HandleIfReady<PingEvent>(x, OnPingEventReceived));
             eventChannel.On<OnJoinedGameEvent>(x => HandleIfReady<OnJoinedGameEvent>(x, OnJoinedGameEventReceived));

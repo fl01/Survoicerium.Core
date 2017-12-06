@@ -33,7 +33,7 @@ namespace Survoicerium.GameApi.Controllers
                 User = user
             };
 
-            _gameService.JoinGameAsync(dto);
+            await _gameService.JoinGameAsync(dto);
 
             return Accepted();
         }

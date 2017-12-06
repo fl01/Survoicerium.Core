@@ -1,4 +1,4 @@
-﻿namespace Survoicerium.Discord.Bot.ApiClient.Models
+﻿namespace Survoicerium.InternalConfigurationApiClient.Models
 {
     public class MessageQueueConfiguration
     {
