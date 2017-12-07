@@ -1,9 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Survoicerium.Core;
-using Survoicerium.GameApi.ApiModels;
 using Survoicerium.Core.Dto;
+using Survoicerium.GameApi.ApiModels;
 
 namespace Survoicerium.GameApi.Controllers
 {
