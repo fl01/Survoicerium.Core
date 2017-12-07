@@ -36,11 +36,11 @@ namespace Survoicerium.Core
                 Users = { game.User }
             };
 
-            // channel already exists, simply add current user to a list
-            if (!_activeChannels.TryAdd(channel.Name, channel))
+            _activeChannels.AddOrUpdate(channel.Name, channel, (k, v) =>
             {
-                _activeChannels[channel.Name].Users.Add(game.User);
-            }
+                v.Users.Add(game.User);
+                return v;
+            });
 
             var joinedGameEvent = new OnJoinedGameEvent()
             {
