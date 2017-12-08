@@ -12,7 +12,7 @@
     <PackageReference Include="AspNetCore.Health" Version="2.0.1" />
     <PackageReference Include="AutoMapper" Version="6.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-    <PackageReference Include="Survoicerium.InternalConfigurationApiClient" Version="0.0.2" />
+    <PackageReference Include="Survoicerium.InternalConfigurationApiClient" Version="0.0.4" />
   </ItemGroup>
 
   <ItemGroup>

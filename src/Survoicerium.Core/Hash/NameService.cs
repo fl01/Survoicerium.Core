@@ -8,7 +8,7 @@ namespace Survoicerium.Core.Hash
     {
         public const string Entropy = "KQ324A@#!ndg";
 
-        public string GetChannelName(string channelId)
+        public string GenerateChannelName(string channelId)
         {
             var stringResult = new StringBuilder();
 

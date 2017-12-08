@@ -6,13 +6,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="appsettings.Live.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="appsettings.Release-CI.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Discord.Net" Version="1.0.2" />
-    <PackageReference Include="Survoicerium.InternalConfigurationApiClient" Version="0.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0" />
+    <PackageReference Include="Survoicerium.InternalConfigurationApiClient" Version="0.0.4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Survoicerium.Messaging.RabbitMq\Survoicerium.Messaging.RabbitMq.csproj" />
     <ProjectReference Include="..\Survoicerium.Messaging\Survoicerium.Messaging.csproj" />
   </ItemGroup>
-
 </Project>

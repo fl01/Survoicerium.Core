@@ -2,6 +2,6 @@
 {
     public interface INameService
     {
-        string GetChannelName(string channelId);
+        string GenerateChannelName(string channelId);
     }
 }

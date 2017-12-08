@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Survoicerium.InternalConfigurationApiClient;
 using Survoicerium.Messaging.RabbitMq;
 using Survoicerium.Messaging.Serialization;
@@ -13,7 +14,7 @@ namespace Survoicerium.Discord.Bot
 
         public async Task MainAsync()
         {
-            var configClient = InternalConfigurationApiClientFactory.Create("http://localhost:5100", TimeSpan.FromSeconds(5), 5);
+            var configClient = InternalConfigurationApiClientFactory.Create(GetConfiguration().GetValue<string>("System:InternalConfiguration:Host"), TimeSpan.FromSeconds(5), 5);
             var systemConfig = await configClient.GetConfigurationAsync();
 
             var eventChannel = new RabbitMqEventChannel(systemConfig.MessageQueue.Host, systemConfig.MessageQueue.User, systemConfig.MessageQueue.Password, new JsonSerializer(), RabbitMqConsts.GenericEventQueueName);
@@ -22,6 +23,15 @@ namespace Survoicerium.Discord.Bot
 
             await svc.ConnectAsync();
             await Task.Delay(-1);
+        }
+
+        private IConfiguration GetConfiguration()
+        {
+            return new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true)
+                .AddEnvironmentVariables()
+                .Build();
         }
     }
 }

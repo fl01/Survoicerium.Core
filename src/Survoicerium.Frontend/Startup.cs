@@ -27,13 +27,13 @@ namespace Survoicerium.Frontend
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var sysClient = InternalConfigurationApiClientFactory.Create("http://localhost:5100", TimeSpan.FromSeconds(5), 5);
+            var sysClient = InternalConfigurationApiClientFactory.Create(Configuration.GetValue<string>("System:InternalConfiguration:Host"), TimeSpan.FromSeconds(5), 5);
             var sysConfig = sysClient.GetConfigurationAsync().GetAwaiter().GetResult();
 
             services.AddHealthChecks(context => context.AddUrlCheck("https://google.com"));
 
             services
-                .RegisterApiService("mongodb://localhost:27017")
+                .RegisterApiService(sysConfig.UsersDb.ConnectionString, sysConfig.UsersDb.DbName, sysConfig.UsersDb.CollectionName)
                 .AddScoped<DiscordApiClient>(builder =>
                 {
                     return new DiscordApiClient(new SimpleHttpClient(), sysConfig.DiscordOAuth.ClientId, sysConfig.DiscordOAuth.ClientSecret);

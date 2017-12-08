@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using MongoDB.Bson;
 using MongoDB.Driver;
 using Survoicerium.Core;
 using Survoicerium.Core.Dto;
@@ -11,11 +10,11 @@ namespace Survoicerium.Infrastructure.Mongo
     {
         private static Lazy<IMongoCollection<ApiUser>> _users = null;
 
-        public ApiUserService(string connectionString)
+        public ApiUserService(ApiUserServiceOptions options)
         {
-            var client = new MongoClient(connectionString);
-            var database = client.GetDatabase("Survoicerium");
-            _users = new Lazy<IMongoCollection<ApiUser>>(() => database.GetCollection<ApiUser>("Users"));
+            var client = new MongoClient(options.ConnectionString);
+            var database = client.GetDatabase(options.DbName);
+            _users = new Lazy<IMongoCollection<ApiUser>>(() => database.GetCollection<ApiUser>(options.CollectionName));
         }
 
         public async Task<ApiUser> GetOrAddAsync(AddUserDto addUserDto)

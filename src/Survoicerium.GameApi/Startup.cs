@@ -33,7 +33,7 @@ namespace Survoicerium.GameApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var sysClient = InternalConfigurationApiClientFactory.Create("http://localhost:5100", TimeSpan.FromSeconds(5), 5);
+            var sysClient = InternalConfigurationApiClientFactory.Create(Configuration.GetValue<string>("System:InternalConfiguration:Host"), TimeSpan.FromSeconds(5), 5);
             var sysConfig = sysClient.GetConfigurationAsync().GetAwaiter().GetResult();
 
             // https://stackoverflow.com/a/45955658/8030072
@@ -54,7 +54,7 @@ namespace Survoicerium.GameApi
             });
 
             services
-                .RegisterApiService("mongodb://localhost:27017")
+                .RegisterApiService(sysConfig.UsersDb.ConnectionString, sysConfig.UsersDb.DbName, sysConfig.UsersDb.CollectionName)
                 .AddTransient<IGameService, GameService>()
                 .AddSingleton<INameService, NameService>()
                 .AddTransient<IMessageSerializer, JsonSerializer>()

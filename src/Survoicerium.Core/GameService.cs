@@ -27,7 +27,7 @@ namespace Survoicerium.Core
 
         public async Task JoinGameAsync(GameInfoDto game)
         {
-            string channelName = _hashService.GetChannelName(game.Hash);
+            string channelName = _hashService.GenerateChannelName(game.Hash);
             var channel = new Channel()
             {
                 Expiry = GetChannelExpiry(),
