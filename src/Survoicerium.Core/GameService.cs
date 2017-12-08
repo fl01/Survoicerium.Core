@@ -15,8 +15,7 @@ namespace Survoicerium.Core
         private readonly INameService _hashService;
         private readonly IEventBus _eventBus;
         private ConcurrentDictionary<string, Channel> _activeChannels = new ConcurrentDictionary<string, Channel>();
-
-        public readonly TimeSpan _expiredChannelWatcherDelay = TimeSpan.FromMinutes(1);
+        private readonly TimeSpan _expiredChannelWatcherDelay = TimeSpan.FromSeconds(30);
 
         public GameService(INameService hashService, IEventBus eventBus)
         {
@@ -31,13 +30,14 @@ namespace Survoicerium.Core
             string channelName = _hashService.GetChannelName(game.Hash);
             var channel = new Channel()
             {
-                Expiry = DateTimeOffset.UtcNow.AddMinutes(18).ToUnixTimeSeconds(),
+                Expiry = GetChannelExpiry(),
                 Name = channelName,
                 Users = { game.User }
             };
 
             _activeChannels.AddOrUpdate(channel.Name, channel, (k, v) =>
             {
+                v.Expiry = GetChannelExpiry();
                 v.Users.Add(game.User);
                 return v;
             });
@@ -49,6 +49,11 @@ namespace Survoicerium.Core
             };
 
             await _eventBus.PublishAsync(joinedGameEvent);
+        }
+
+        private long GetChannelExpiry()
+        {
+            return DateTimeOffset.UtcNow.AddMinutes(1).ToUnixTimeSeconds();
         }
 
         private void RunExpiredChannelWatcher()

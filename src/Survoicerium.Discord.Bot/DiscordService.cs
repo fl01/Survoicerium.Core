@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
@@ -16,6 +17,7 @@ namespace Survoicerium.Discord.Bot
         private readonly object _getChannelLock = new object();
 
         public const ulong DefaultDiscordChannel = 370681552679469056;
+        public const ulong DefaultVoiceChannel = 388770842911178762;
         public const ulong DefaultServerId = 370680552334032897;
 
         private SocketTextChannel DefaultTextChannel { get; set; }
@@ -38,8 +40,13 @@ namespace Survoicerium.Discord.Bot
             _client.Connected += () =>
             {
                 DefaultServer = _client.Guilds.FirstOrDefault(s => s.Id == DefaultServerId);
+
                 Debug.Assert(DefaultServer != null);
-                DefaultTextChannel = DefaultServer.GetTextChannel(DefaultDiscordChannel);
+                while ((DefaultTextChannel = DefaultServer.GetTextChannel(DefaultDiscordChannel)) == null)
+                {
+                    Thread.Sleep(1000);
+                }
+
                 return Task.CompletedTask;
             };
 
@@ -61,7 +68,8 @@ namespace Survoicerium.Discord.Bot
             var user = DefaultServer.GetUser(args.VoiceUserId);
             if (user != null)
             {
-                await user.ModifyAsync(x => x.Channel = DefaultServer.GetVoiceChannel(channelId));
+                await user.ModifyAsync(x => x.ChannelId = channelId);
+                await DefaultTextChannel.SendMessageAsync($"User '{user.Username}' has been moved to '{args.ChannelName}' with id '{channelId}'");
             }
         }
 
@@ -72,11 +80,16 @@ namespace Survoicerium.Discord.Bot
 
         private async void OnChannelExpiredReceived(OnChannelExpiredEvent args)
         {
-            await DefaultTextChannel.SendMessageAsync($"Channel '{args.ChannelName}' is expired and should be deleted");
             var channel = DefaultServer.VoiceChannels.FirstOrDefault(v => string.Equals(args.ChannelName, v.Name, StringComparison.OrdinalIgnoreCase));
             if (channel != null)
             {
+                foreach(var user in channel.Users.ToList())
+                {
+                    await user.ModifyAsync(x => x.ChannelId = DefaultVoiceChannel);
+                }
+
                 await channel.DeleteAsync();
+                await DefaultTextChannel.SendMessageAsync($"Channel '{args.ChannelName}' has been deleted due to expiry");
             }
         }
 

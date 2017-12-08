@@ -25,7 +25,7 @@ namespace Survoicerium.GameApi.Authorization
                 && mvc.HttpContext.Request.Headers.TryGetValue(ApiKeyHeader, out StringValues apiKeys))
             {
                 string apiKey = apiKeys.FirstOrDefault();
-                if (await _userService.IsValidApiKeyAsync(apiKey))
+                if (await _userService.GetUserByApiKeyAsync(apiKey) != null)
                 {
                     context.Succeed(requirement);
                 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using Survoicerium.Core;
 using Survoicerium.Core.Dto;
@@ -17,9 +18,9 @@ namespace Survoicerium.Infrastructure.Mongo
             _users = new Lazy<IMongoCollection<ApiUser>>(() => database.GetCollection<ApiUser>("Users"));
         }
 
-        public async Task<IApiUser> GetOrAddAsync(AddUserDto addUserDto)
+        public async Task<ApiUser> GetOrAddAsync(AddUserDto addUserDto)
         {
-            var existing = await _users.Value.Find(u => u.Discord.UserId == addUserDto.DiscordUserId).FirstOrDefaultAsync();
+            var existing = await _users.Value.Find(u => u.Discord.UserId == addUserDto.DiscordUserId).SingleOrDefaultAsync();
 
             if (existing != null)
             {
@@ -44,27 +45,14 @@ namespace Survoicerium.Infrastructure.Mongo
 
             await _users.Value.InsertOneAsync(apiUser);
 
-
             return apiUser;
         }
 
-        public async Task<IApiUser> GetUserByHardwareIdAsync(string hardwareId)
+        public async Task<ApiUser> GetUserByApiKeyAsync(string apiKey)
         {
-            var existing = await _users.Value.Find(u => u.HardwareIds.Contains(hardwareId)).FirstOrDefaultAsync();
+            var existing = await _users.Value.Find(u => apiKey == u.ApiKey).FirstOrDefaultAsync();
 
             return existing;
-        }
-
-        public async Task<IApiUser> GetUserByApiKeyAsync(string apiKey)
-        {
-            var existing = await _users.Value.Find(u => string.Equals(apiKey, u.ApiKey, StringComparison.OrdinalIgnoreCase)).FirstOrDefaultAsync();
-
-            return existing;
-        }
-
-        public async Task<bool> IsValidApiKeyAsync(string apiKey)
-        {
-            return await _users.Value.Find(u => string.Equals(u.ApiKey, apiKey, StringComparison.OrdinalIgnoreCase)).AnyAsync();
         }
     }
 }

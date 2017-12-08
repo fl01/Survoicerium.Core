@@ -2,7 +2,7 @@
 {
     public class GameInfoDto
     {
-        public IApiUser User { get; set; }
+        public ApiUser User { get; set; }
 
         public string Hash { get; set; }
     }

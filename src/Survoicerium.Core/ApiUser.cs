@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Survoicerium.Core;
 
-namespace Survoicerium.Infrastructure.Mongo
+namespace Survoicerium.Core
 {
-    public class ApiUser : IApiUser
+    public class ApiUser
     {
         public Guid Id { get; set; }
 
@@ -12,7 +11,7 @@ namespace Survoicerium.Infrastructure.Mongo
 
         public HashSet<string> HardwareIds { get; set; } = new HashSet<string>();
 
-        public IDiscordAccount Discord { get; set; }
+        public DiscordAccount Discord { get; set; }
 
         public long CreatedAt { get; set; }
 

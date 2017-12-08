@@ -9,6 +9,6 @@ namespace Survoicerium.Core
 
         public string Name { get; set; }
 
-        public ICollection<IApiUser> Users { get; set; } = new List<IApiUser>();
+        public ICollection<ApiUser> Users { get; set; } = new List<ApiUser>();
     }
 }

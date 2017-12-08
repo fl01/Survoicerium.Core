@@ -25,7 +25,7 @@ namespace Survoicerium.GameApi.Controllers
 
             var user = await _userService.GetUserByApiKeyAsync(apiKey);
 
-            return Ok(Mapper.Map<IApiUser, User>(user));
+            return Ok(Mapper.Map<ApiUser, User>(user));
         }
     }
 }

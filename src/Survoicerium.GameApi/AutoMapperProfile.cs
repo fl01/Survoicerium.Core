@@ -8,8 +8,8 @@ namespace Survoicerium.GameApi
     {
         public AutoMapperProfile()
         {
-            CreateMap<IApiUser, User>();
-            CreateMap<IDiscordAccount, DiscordUser>();
+            CreateMap<ApiUser, User>();
+            CreateMap<DiscordAccount, DiscordUser>();
         }
     }
 }

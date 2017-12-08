@@ -43,13 +43,6 @@ namespace Survoicerium.Frontend.Pages
                 return;
             }
 
-            IApiUser apiUser = _apiUserService.GetUserByHardwareIdAsync(state).GetAwaiter().GetResult();
-            if (apiUser != null)
-            {
-                ApiKey = apiUser.ApiKey;
-                return;
-            }
-
             else if (string.IsNullOrEmpty(code))
             {
                 await BeginNewKeyCreation(state);
@@ -86,7 +79,7 @@ namespace Survoicerium.Frontend.Pages
                     DiscordUserId = data.User.Id
                 };
 
-                IApiUser apiUser = await _apiUserService.GetOrAddAsync(dto);
+                ApiUser apiUser = await _apiUserService.GetOrAddAsync(dto);
                 ApiKey = apiUser.ApiKey;
             }
         }
