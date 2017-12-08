@@ -1,6 +1,60 @@
 ﻿@page
 <div class="container">
-    <h1>Server Status</h1>
+
+    <div class="col-md-6">
+        <div class="panel panel-warning text-center">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    WE ARE DEAD
+                    <br />
+                    <small class="text-center">Refreshed XX minutes ago</small>
+                </h3>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="column">
+                <div class="list-group">
+                    <div class="list-group-item">
+                        <h4 class="list-group-item-heading">
+                            Server
+                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Accepts requests from Desktop Client">
+                                <i class="fa fa-question-circle"></i>
+                            </a>
+                            <span class="label label-danger pull-right">Not Operational</span>
+                        </h4>
+                    </div>
+                    <div class="list-group-item">
+                        <h4 class="list-group-item-heading">
+                            Message Queue
+                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Transports data between services">
+                                <i class="fa fa-question-circle"></i>
+                            </a>
+                            <span class="label label-danger pull-right">Not Operational</span>
+                        </h4>
+                    </div>
+                    <div class="list-group-item">
+                        <h4 class="list-group-item-heading">
+                            Discord Bot
+                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Manages users in discord guild">
+                                <i class="fa fa-question-circle"></i>
+                            </a>
+                            <span class="label label-danger pull-right">Not Operational</span>
+                        </h4>
+                    </div>
+                    <div class="list-group-item">
+                        <h4 class="list-group-item-heading">
+                            Database
+                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Stores users/apikeys">
+                                <i class="fa fa-question-circle"></i>
+                            </a>
+                            <span class="label label-danger pull-right">Not Operational</span>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
