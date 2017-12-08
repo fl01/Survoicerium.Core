@@ -17,6 +17,20 @@ namespace Survoicerium.Infrastructure.Mongo
         public ApiUserService(string connectionString)
         {
             _connectionString = connectionString;
+
+            // TODO : drop test user
+            var id = Guid.NewGuid();
+            _users[id] = new ApiUser()
+            {
+                ApiKey = "3DBD13E6-9F36-4360-84C9-F9DD2FA72CCD",
+                CreatedAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                Id = id,
+                IsBanned = false,
+                Discord = new DiscordAccount()
+                {
+                    UserId = 1337
+                }
+            };
         }
 
         public async Task<IApiUser> AddAsync(AddUserDto addUserDto)

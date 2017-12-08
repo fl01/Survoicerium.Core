@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using AspNetCore.Health;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -25,6 +26,7 @@ namespace Survoicerium.GameApi
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            Mapper.Initialize(cfg => cfg.AddProfile<AutoMapperProfile>());
         }
 
         public IConfiguration Configuration { get; }

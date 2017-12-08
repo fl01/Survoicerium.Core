@@ -14,7 +14,7 @@ namespace Survoicerium.Infrastructure.Mongo
 
         public IDiscordAccount Discord { get; set; }
 
-        public int CreatedAt { get; set; }
+        public long CreatedAt { get; set; }
 
         public bool IsBanned { get; set; }
     }

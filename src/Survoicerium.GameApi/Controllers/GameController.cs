@@ -8,7 +8,7 @@ using Survoicerium.GameApi.Authorization;
 
 namespace Survoicerium.GameApi.Controllers
 {
-    public class GameController : Controller
+    public class GameController : BaseController
     {
         private readonly IApiUserService _userService;
         private readonly IGameService _gameService;
@@ -36,11 +36,6 @@ namespace Survoicerium.GameApi.Controllers
             await _gameService.JoinGameAsync(dto);
 
             return Accepted();
-        }
-
-        private string GetCurrentUserApiKey()
-        {
-            return HttpContext.Request.Headers[ApiKeyHandler.ApiKeyHeader][0];
         }
     }
 }

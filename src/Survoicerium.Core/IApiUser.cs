@@ -13,7 +13,7 @@ namespace Survoicerium.Core
 
         IDiscordAccount Discord { get; set; }
 
-        int CreatedAt { get; set; }
+        long CreatedAt { get; set; }
 
         bool IsBanned { get; set; }
     }
