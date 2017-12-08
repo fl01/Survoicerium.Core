@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Survoicerium.Core;
 using Survoicerium.Core.Hash;
 using Survoicerium.GameApi.Authorization;
+using Survoicerium.GameApi.Filters;
 using Survoicerium.Infrastructure.Mongo;
 using Survoicerium.InternalConfigurationApiClient;
 using Survoicerium.Messaging;
@@ -59,7 +60,10 @@ namespace Survoicerium.GameApi
                 .AddScoped<IAuthorizationHandler, ApiKeyHandler>();
 
             services.AddHealthChecks(context => context.AddUrlCheck("https://google.com"));
-            services.AddMvc();
+            services.AddMvc(opt =>
+            {
+                opt.Filters.Add<ModelStateValidationFilter>();
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
