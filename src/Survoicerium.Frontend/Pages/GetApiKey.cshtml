@@ -1,20 +1,24 @@
 ﻿@page
 @model Survoicerium.Frontend.Pages.GetApiKey
-@{
-    ViewData["Title"] = "Api key";
-}
-@{ if (string.IsNullOrEmpty(@Model.ErrorMessage))
-    {
-        <h1>Your api key is meant to be <b>SECRET</b></h1>
-        <h1>It is the way by which your <b>voice client</b> authenticates with our system. Revealing your api key is like putting your password on the internet, and anyone that gets this api key can do stuff on your behalf</h1>
-        <br />
-        <h1>Key: <b>@Model.ApiKey</b></h1>
+<div class="container">
+    @{ if (string.IsNullOrEmpty(@Model.ErrorMessage))
+        {
+
+            <h1>
+                Your api key is meant to be <b>SECRET</b>
+                <br />
+                It is the way by which your <b>voice client</b> authenticates with our system. Revealing your api key is like putting your password on the internet, and anyone that gets this api key can do stuff on your behalf
+                <br />
+                <br />
+                Key: <b>@Model.ApiKey</b>
+            </h1>
+        }
+        else
+        {
+            <h1>@Model.ErrorMessage</h1>
+        }
     }
-    else
-    {
-        <h1>@Model.ErrorMessage</h1>
-    }
-}
+</div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

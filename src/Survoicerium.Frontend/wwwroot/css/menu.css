@@ -21,8 +21,8 @@ body {
 }
 
 .menu {
-    width: 5em;
-    height: 5em;
+    width: 6em;
+    height: 6em;
 }
 
     .menu .btn {
@@ -41,11 +41,11 @@ body {
     }
 
         .menu .btn .fa {
-            font-size: 3em;
+            font-size: 4em;
             transition: color 0.3s;
         }
 
-        .menu .btn:hover .fa {
+        .menu .fa:hover {
             color: rgba(255, 255, 255, 0.7);
         }
 

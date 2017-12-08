@@ -1,0 +1,85 @@
+﻿@page
+@model Survoicerium.Frontend.Pages.InfoModel
+
+<div class="container">
+    <div class="panel-group col-md-6" id="faqAccordion">
+        <div class="panel panel-default ">
+            <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion" data-target="#question0">
+                <h4 class="panel-title">
+                    <a href="#" class="ing">Q: What is this?</a>
+                </h4>
+            </div>
+            <div id="question0" class="panel-collapse collapse" style="height: 0px;">
+                <div class="panel-body">
+                    <h5><span class="label label-primary">Answer</span></h5>
+                    <p>
+                        It is a voice chat! LUL
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default ">
+            <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#question1">
+                <h4 class="panel-title">
+                    <a href="#" class="ing">Q: Is it safe?</a>
+                </h4>
+            </div>
+            <div id="question1" class="panel-collapse collapse" style="height: 0px;">
+                <div class="panel-body">
+                    <h5><span class="label label-primary">Answer</span></h5>
+                    <p>
+                        Yep. Everything is open-sourced, so, feel free to check it by yourself:
+                        <br />
+                        <br />
+                        <b>Desktop Client Code: </b><a href="https://github.com/fl01/Survoicerium.Desktop" target="_blank">https://github.com/fl01/Survoicerium.Desktop</a>
+                        <br />
+                        <b>Server/Website Code: </b><a class="faq-link" href="https://github.com/fl01/Survoicerium.Core" target="_blank">https://github.com/fl01/Survoicerium.Core</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default ">
+            <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#question2">
+                <h4 class="panel-title">
+                    <a href="#" class="ing">Q: Is it free?</a>
+                </h4>
+            </div>
+            <div id="question2" class="panel-collapse collapse" style="height: 0px;">
+                <div class="panel-body">
+                    <h5><span class="label label-primary">Answer</span></h5>
+                    <p>Yep, I don't plan to monetize it as well as maintain a lot ¯\_(ツ)_/¯</p>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default ">
+            <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#question3">
+                <h4 class="panel-title">
+                    <a href="#" class="ing">Q: How do I report a problem?</a>
+                </h4>
+            </div>
+            <div id="question3" class="panel-collapse collapse" style="height: 0px;">
+                <div class="panel-body">
+                    <h5><span class="label label-primary">Answer</span></h5>
+                    <p>Use GitHub issues</p>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default ">
+            <div class="panel-heading accordion-toggle collapsed question-toggle" data-toggle="collapse" data-parent="#faqAccordion" data-target="#question4">
+                <h4 class="panel-title">
+                    <a href="#" class="ing">Q: Usage guide</a>
+                </h4>
+            </div>
+            <div id="question4" class="panel-collapse collapse" style="height: 0px;">
+                <div class="panel-body">
+                    <h5><span class="label label-primary">Answer</span></h5>
+                    <p>INSERT GUIDE HERE</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

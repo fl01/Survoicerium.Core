@@ -4,3 +4,10 @@ a, a:hover, a:active, a:visited {
     text-decoration: none;
     color: inherit;
 }
+
+.container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
