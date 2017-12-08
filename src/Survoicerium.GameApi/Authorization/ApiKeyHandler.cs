@@ -19,19 +19,17 @@ namespace Survoicerium.GameApi.Authorization
             _userService = userService;
         }
 
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ApiKeyRequirement requirement)
+        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, ApiKeyRequirement requirement)
         {
             if (context.Resource is AuthorizationFilterContext mvc
                 && mvc.HttpContext.Request.Headers.TryGetValue(ApiKeyHeader, out StringValues apiKeys))
             {
                 string apiKey = apiKeys.FirstOrDefault();
-                if (_userService.IsValidApiKey(apiKey))
+                if (await _userService.IsValidApiKeyAsync(apiKey))
                 {
                     context.Succeed(requirement);
                 }
             }
-
-            return Task.CompletedTask;
         }
     }
 }

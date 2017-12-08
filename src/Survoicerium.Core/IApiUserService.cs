@@ -5,12 +5,12 @@ namespace Survoicerium.Core
 {
     public interface IApiUserService
     {
-        Task<IApiUser> AddAsync(AddUserDto addUserDto);
+        Task<IApiUser> GetOrAddAsync(AddUserDto addUserDto);
 
         Task<IApiUser> GetUserByHardwareIdAsync(string hardwareId);
 
         Task<IApiUser> GetUserByApiKeyAsync(string apiKey);
 
-        bool IsValidApiKey(string apiKey);
+        Task<bool> IsValidApiKeyAsync(string apiKey);
     }
 }

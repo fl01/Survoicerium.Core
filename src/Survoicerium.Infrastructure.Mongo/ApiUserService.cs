@@ -1,41 +1,26 @@
-﻿using Survoicerium.Core;
-using Survoicerium.Core.Dto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Threading.Tasks;
+using MongoDB.Driver;
+using Survoicerium.Core;
+using Survoicerium.Core.Dto;
 
 namespace Survoicerium.Infrastructure.Mongo
 {
     public class ApiUserService : IApiUserService
     {
-        private readonly string _connectionString;
-
-        // TODO : should be replaced with mongo
-        private static Dictionary<Guid, ApiUser> _users = new Dictionary<Guid, ApiUser>();
+        private static Lazy<IMongoCollection<ApiUser>> _users = null;
 
         public ApiUserService(string connectionString)
         {
-            _connectionString = connectionString;
-
-            // TODO : drop test user
-            var id = Guid.NewGuid();
-            _users[id] = new ApiUser()
-            {
-                ApiKey = "3DBD13E6-9F36-4360-84C9-F9DD2FA72CCD",
-                CreatedAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
-                Id = id,
-                IsBanned = false,
-                Discord = new DiscordAccount()
-                {
-                    UserId = 1337
-                }
-            };
+            var client = new MongoClient(connectionString);
+            var database = client.GetDatabase("Survoicerium");
+            _users = new Lazy<IMongoCollection<ApiUser>>(() => database.GetCollection<ApiUser>("Users"));
         }
 
-        public async Task<IApiUser> AddAsync(AddUserDto addUserDto)
+        public async Task<IApiUser> GetOrAddAsync(AddUserDto addUserDto)
         {
-            var existing = _users.FirstOrDefault(u => u.Value.Discord.UserId == addUserDto.DiscordUserId).Value;
+            var existing = await _users.Value.Find(u => u.Discord.UserId == addUserDto.DiscordUserId).FirstOrDefaultAsync();
+
             if (existing != null)
             {
                 return existing;
@@ -57,28 +42,29 @@ namespace Survoicerium.Infrastructure.Mongo
                 IsBanned = false
             };
 
-            _users[apiUser.Id] = apiUser;
+            await _users.Value.InsertOneAsync(apiUser);
+
 
             return apiUser;
         }
 
-        public Task<IApiUser> GetUserByHardwareIdAsync(string hardwareId)
+        public async Task<IApiUser> GetUserByHardwareIdAsync(string hardwareId)
         {
-            var existing = _users.FirstOrDefault(u => u.Value.HardwareIds.Contains(hardwareId));
+            var existing = await _users.Value.Find(u => u.HardwareIds.Contains(hardwareId)).FirstOrDefaultAsync();
 
-            return Task.FromResult<IApiUser>(existing.Value);
+            return existing;
         }
 
-        public Task<IApiUser> GetUserByApiKeyAsync(string apiKey)
+        public async Task<IApiUser> GetUserByApiKeyAsync(string apiKey)
         {
-            var existing = _users.FirstOrDefault(u => string.Equals(apiKey, u.Value.ApiKey, StringComparison.OrdinalIgnoreCase));
+            var existing = await _users.Value.Find(u => string.Equals(apiKey, u.ApiKey, StringComparison.OrdinalIgnoreCase)).FirstOrDefaultAsync();
 
-            return Task.FromResult<IApiUser>(existing.Value);
+            return existing;
         }
 
-        public bool IsValidApiKey(string apiKey)
+        public async Task<bool> IsValidApiKeyAsync(string apiKey)
         {
-            return _users.Any(u => string.Equals(u.Value.ApiKey, apiKey, StringComparison.OrdinalIgnoreCase));
+            return await _users.Value.Find(u => string.Equals(u.ApiKey, apiKey, StringComparison.OrdinalIgnoreCase)).AnyAsync();
         }
     }
 }

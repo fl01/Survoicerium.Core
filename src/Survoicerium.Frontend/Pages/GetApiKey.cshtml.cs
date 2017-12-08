@@ -86,7 +86,7 @@ namespace Survoicerium.Frontend.Pages
                     DiscordUserId = data.User.Id
                 };
 
-                IApiUser apiUser = await _apiUserService.AddAsync(dto);
+                IApiUser apiUser = await _apiUserService.GetOrAddAsync(dto);
                 ApiKey = apiUser.ApiKey;
             }
         }
