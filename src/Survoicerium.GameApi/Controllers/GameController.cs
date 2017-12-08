@@ -1,8 +1,10 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Survoicerium.Core;
 using Survoicerium.Core.Dto;
-using Survoicerium.GameApi.ApiModels;
+using Survoicerium.GameApi.ApiModels.RequestModels;
+using Survoicerium.GameApi.Authorization;
 
 namespace Survoicerium.GameApi.Controllers
 {
@@ -18,14 +20,13 @@ namespace Survoicerium.GameApi.Controllers
         }
 
         [HttpPost("api/game")]
+        [Authorize(nameof(ApiKeyRequirement))]
         public async Task<IActionResult> HandleJoinGameRequest([FromBody]GameInfo gameInfo)
         {
-            var user = await _userService.GetUserByApiKeyAsync(gameInfo.ApiKey);
-            if (user == null)
-            {
-                return NotFound();
-            }
+            // it is already been authorized by auth filter
+            var userApiKey = GetCurrentUserApiKey();
 
+            var user = await _userService.GetUserByApiKeyAsync(userApiKey);
             var dto = new GameInfoDto()
             {
                 Hash = gameInfo.Hash,
@@ -35,6 +36,11 @@ namespace Survoicerium.GameApi.Controllers
             await _gameService.JoinGameAsync(dto);
 
             return Accepted();
+        }
+
+        private string GetCurrentUserApiKey()
+        {
+            return HttpContext.Request.Headers[ApiKeyHandler.ApiKeyHeader][0];
         }
     }
 }
