@@ -28,18 +28,13 @@ namespace Survoicerium.Frontend.Pages
             }
         }
 
-        public GetApiKey(IOptions<DiscordOAuth> options, IApiUserService apiUserService, DiscordApiClient apiClient)
+        public GetApiKey(DiscordOAuth options, IApiUserService apiUserService, DiscordApiClient apiClient)
         {
-            _discordOAuth = options.Value;
+            _discordOAuth = options;
             _apiUserService = apiUserService;
             _apiClient = apiClient;
         }
 
-        /// <summary>
-        /// TODO : rewrite in railwayprogramming style
-        /// </summary>
-        /// <param name="code"></param>
-        /// <param name="state"></param>
         public async void OnGet([FromQuery]string code, [FromQuery]string state)
         {
             if (string.IsNullOrEmpty(state))

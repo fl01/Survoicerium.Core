@@ -46,7 +46,7 @@ namespace Survoicerium.Discord.ApiClient
             {
                 { "client_id", _clientId },
                 { "client_secret", _clientSecret },
-                { "redirect_uri", "http://localhost:5001/getapikey" },
+                { "redirect_uri", redirectUri },
                 { "code", code },
                 { "grant_type", "authorization_code" }
             };
