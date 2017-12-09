@@ -18,7 +18,8 @@ namespace Survoicerium.Discord.Bot
             var systemConfig = await configClient.GetConfigurationAsync();
 
             var eventChannel = new RabbitMqEventChannel(systemConfig.MessageQueue.Host, systemConfig.MessageQueue.User, systemConfig.MessageQueue.Password, new JsonSerializer(), RabbitMqConsts.GenericEventQueueName);
-            var svc = new DiscordService(systemConfig.DiscordBot.ApiKey, eventChannel);
+            var eventBus = new RabbitMqEventBus(systemConfig.MessageQueue.Host, systemConfig.MessageQueue.User, systemConfig.MessageQueue.Password, new JsonSerializer());
+            var svc = new DiscordService(systemConfig.DiscordBot.ApiKey, eventChannel, eventBus);
             eventChannel.Start();
 
             await svc.ConnectAsync();

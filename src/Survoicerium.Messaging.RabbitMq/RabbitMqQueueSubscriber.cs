@@ -87,9 +87,15 @@ namespace Survoicerium.Messaging.RabbitMq
                     return;
                 }
 
-                ProcessMessage(messageId, deliveryArgs.Body);
-
-                channel.Model.BasicAck(deliveryArgs.DeliveryTag, false);
+                // TODO: this is really bad approach, should be reworked later to use multiple queues
+                if (ProcessMessage(messageId, deliveryArgs.Body))
+                {
+                    channel.Model.BasicAck(deliveryArgs.DeliveryTag, false);
+                }
+                else
+                {
+                    channel.Model.BasicNack(deliveryArgs.DeliveryTag, false, true);
+                }
             }
             catch (SerializationException ex)
             {

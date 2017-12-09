@@ -14,18 +14,20 @@ namespace Survoicerium.Discord.Bot
     {
         private DiscordSocketClient _client;
         private readonly string _token;
+        private readonly IEventBus _eventBus;
         private readonly object _getChannelLock = new object();
 
-        public const ulong DefaultDiscordChannel = 370681552679469056;
-        public const ulong DefaultVoiceChannel = 388770842911178762;
-        public const ulong DefaultServerId = 370680552334032897;
+        public const ulong DefaultGuildTextChannelId = 370681552679469056;
+        public const ulong DefaultGuildVoiceChannelId = 388770842911178762;
+        public const ulong DefaultGuildId = 370680552334032897;
 
         private SocketTextChannel DefaultTextChannel { get; set; }
         private SocketGuild DefaultServer { get; set; }
 
-        public DiscordService(string token, IEventChannel eventChannel)
+        public DiscordService(string token, IEventChannel eventChannel, IEventBus eventBus)
         {
             _token = token;
+            _eventBus = eventBus;
 
             eventChannel.On<OnJoinedGameEvent>(x => HandleIfReady<OnJoinedGameEvent>(x, OnJoinedGameEventReceived));
             eventChannel.On<OnChannelExpiredEvent>(x => HandleIfReady<OnChannelExpiredEvent>(x, OnChannelExpiredReceived));
@@ -38,10 +40,11 @@ namespace Survoicerium.Discord.Bot
             _client.MessageReceived += MessageReceived;
             _client.Connected += () =>
             {
-                DefaultServer = _client.Guilds.FirstOrDefault(s => s.Id == DefaultServerId);
+                DefaultServer = _client.Guilds.FirstOrDefault(s => s.Id == DefaultGuildId);
 
                 Debug.Assert(DefaultServer != null);
-                while ((DefaultTextChannel = DefaultServer.GetTextChannel(DefaultDiscordChannel)) == null)
+                // TODO: could cause a dead lock, add retries
+                while ((DefaultTextChannel = DefaultServer.GetTextChannel(DefaultGuildTextChannelId)) == null)
                 {
                     Thread.Sleep(1000);
                 }
@@ -79,7 +82,7 @@ namespace Survoicerium.Discord.Bot
             {
                 foreach (var user in channel.Users.ToList())
                 {
-                    await user.ModifyAsync(x => x.ChannelId = DefaultVoiceChannel);
+                    await user.ModifyAsync(x => x.ChannelId = DefaultGuildVoiceChannelId);
                 }
 
                 await channel.DeleteAsync();
@@ -100,9 +103,24 @@ namespace Survoicerium.Discord.Bot
 
         private async Task MessageReceived(SocketMessage message)
         {
-            if (message.Content == "!ping")
+            // TODO: command parser etc
+            if (message.Content == "!join")
             {
-                await message.Channel.SendMessageAsync("Pong!");
+                await HandleChatRequestToJoinVoiceChannel(message);
+            }
+        }
+
+        private async Task HandleChatRequestToJoinVoiceChannel(SocketMessage message)
+        {
+            bool isUserInWaitingRoom = (DefaultServer.GetVoiceChannel(DefaultGuildVoiceChannelId)?.Users?.Any(u => u.Id == message.Author.Id)).GetValueOrDefault();
+            if (!isUserInWaitingRoom)
+            {
+                await message.Channel.SendMessageAsync("Please join 'WaitingRoom' and try again");
+            }
+            else
+            {
+                await _eventBus.PublishAsync(new OnChatRequestToJoinVoiceChannel() { UserId = message.Author.Id });
+                await message.Channel.SendMessageAsync("Your request has been accepted. You will be moved to voice channel in case you have an active game");
             }
         }
 

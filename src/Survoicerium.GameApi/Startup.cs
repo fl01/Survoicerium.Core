@@ -53,12 +53,14 @@ namespace Survoicerium.GameApi
                 opt.AddPolicy(nameof(ApiKeyRequirement), policy => policy.Requirements.Add(new ApiKeyRequirement()));
             });
 
+            var nameService = new NameService();
+            var channel = new RabbitMqEventChannel(sysConfig.MessageQueue.Host, sysConfig.MessageQueue.User, sysConfig.MessageQueue.Password, new JsonSerializer(), RabbitMqConsts.GenericEventQueueName);
+            var bus = new RabbitMqEventBus(sysConfig.MessageQueue.Host, sysConfig.MessageQueue.User, sysConfig.MessageQueue.Password, new JsonSerializer());
+            var gameService = new GameService(nameService, bus, channel);
+            channel.Start();
             services
                 .RegisterApiService(sysConfig.UsersDb.ConnectionString, sysConfig.UsersDb.DbName, sysConfig.UsersDb.CollectionName)
-                .AddTransient<IGameService, GameService>()
-                .AddSingleton<INameService, NameService>()
-                .AddTransient<IMessageSerializer, JsonSerializer>()
-                .AddSingleton<IEventBus>(f => new RabbitMqEventBus(sysConfig.MessageQueue.Host, sysConfig.MessageQueue.User, sysConfig.MessageQueue.Password, f.GetRequiredService<IMessageSerializer>()))
+                .AddSingleton<IGameService>(gameService)
                 .AddScoped<IAuthorizationHandler, ApiKeyHandler>();
 
             services.AddHealthChecks(context => context.AddUrlCheck("https://google.com"));

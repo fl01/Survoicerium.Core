@@ -38,6 +38,7 @@ namespace Survoicerium.Messaging.RabbitMq
             {
                 // TODO : logger
                 Console.WriteLine($"Event '{messageId}' is unhandled.");
+                return false;
             }
 
             foreach (var sub in handlers)

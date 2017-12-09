@@ -17,10 +17,13 @@ namespace Survoicerium.Core
         private ConcurrentDictionary<string, Channel> _activeChannels = new ConcurrentDictionary<string, Channel>();
         private readonly TimeSpan _expiredChannelWatcherDelay = TimeSpan.FromSeconds(30);
 
-        public GameService(INameService hashService, IEventBus eventBus)
+        public GameService(INameService hashService, IEventBus eventBus, IEventChannel eventChannel)
         {
             _hashService = hashService;
             _eventBus = eventBus;
+
+            // TODO : this should be moved to a separate worker, but for now it is fine
+            eventChannel.On<OnChatRequestToJoinVoiceChannel>(HandleOnChatRequestToJoinVoiceChannel);
 
             Task.Factory.StartNew(RunExpiredChannelWatcher, TaskCreationOptions.LongRunning);
         }
@@ -42,10 +45,26 @@ namespace Survoicerium.Core
                 return v;
             });
 
+            await SendOnJoinedGameEvent(channel.Name, game.User.Discord.UserId);
+        }
+
+        private async void HandleOnChatRequestToJoinVoiceChannel(object args)
+        {
+            var request = args as OnChatRequestToJoinVoiceChannel;
+
+            var activeChannel = _activeChannels.FirstOrDefault(c => c.Value.Users.Any(u => u.Discord.UserId == request.UserId));
+            if (!string.IsNullOrEmpty(activeChannel.Key))
+            {
+                await SendOnJoinedGameEvent(activeChannel.Key, request.UserId);
+            }
+        }
+
+        private async Task SendOnJoinedGameEvent(string channelName, ulong voiceUserId)
+        {
             var joinedGameEvent = new OnJoinedGameEvent()
             {
-                ChannelName = channel.Name,
-                VoiceUserId = game.User.Discord.UserId
+                ChannelName = channelName,
+                VoiceUserId = voiceUserId
             };
 
             await _eventBus.PublishAsync(joinedGameEvent);
