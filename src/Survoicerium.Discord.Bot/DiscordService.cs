@@ -27,7 +27,6 @@ namespace Survoicerium.Discord.Bot
         {
             _token = token;
 
-            eventChannel.On<PingEvent>(x => HandleIfReady<PingEvent>(x, OnPingEventReceived));
             eventChannel.On<OnJoinedGameEvent>(x => HandleIfReady<OnJoinedGameEvent>(x, OnJoinedGameEventReceived));
             eventChannel.On<OnChannelExpiredEvent>(x => HandleIfReady<OnChannelExpiredEvent>(x, OnChannelExpiredReceived));
         }
@@ -73,17 +72,12 @@ namespace Survoicerium.Discord.Bot
             }
         }
 
-        private async void OnPingEventReceived(PingEvent args)
-        {
-            await DefaultTextChannel.SendMessageAsync($"Received: '{args.Message}'");
-        }
-
         private async void OnChannelExpiredReceived(OnChannelExpiredEvent args)
         {
             var channel = DefaultServer.VoiceChannels.FirstOrDefault(v => string.Equals(args.ChannelName, v.Name, StringComparison.OrdinalIgnoreCase));
             if (channel != null)
             {
-                foreach(var user in channel.Users.ToList())
+                foreach (var user in channel.Users.ToList())
                 {
                     await user.ModifyAsync(x => x.ChannelId = DefaultVoiceChannel);
                 }
