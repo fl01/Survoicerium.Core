@@ -17,7 +17,7 @@ namespace Survoicerium.Discord.Bot
         private readonly IEventBus _eventBus;
         private readonly object _getChannelLock = new object();
 
-        public const ulong DefaultGuildTextChannelId = 370681552679469056;
+        public const ulong DefaultGuildTextChannelId = 389022206157520908;
         public const ulong DefaultGuildVoiceChannelId = 388770842911178762;
         public const ulong DefaultGuildId = 370680552334032897;
 
