@@ -85,6 +85,7 @@ namespace Survoicerium.Messaging.RabbitMq
                 {
                     Console.WriteLine(ex);
                     Thread.Sleep(TimeSpan.FromSeconds(5));
+                    continue;
                 }
 
                 var consumer = new EventingBasicConsumer(_channel);
