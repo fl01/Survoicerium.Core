@@ -1,0 +1,11 @@
+FROM microsoft/dotnet:2.0-sdk as builder
+COPY . /src
+WORKDIR /src/src
+RUN dotnet restore
+WORKDIR Survoicerium.Discord.Bot
+RUN dotnet publish -c Release -o out
+
+FROM microsoft/dotnet:2.0.4-runtime-jessie as runner
+COPY --from=0 /src/src/Survoicerium.Discord.Bot/out /app
+WORKDIR /app
+ENTRYPOINT ["dotnet", "Survoicerium.Discord.Bot.dll"]
