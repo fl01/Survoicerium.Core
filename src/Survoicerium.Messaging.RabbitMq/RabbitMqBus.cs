@@ -31,13 +31,13 @@ namespace Survoicerium.Messaging.RabbitMq
         }
 
         public Task PublishAsync<TMessage>(TMessage body)
-           where TMessage : Message
+            where TMessage : Message
         {
             return PublishAsync(body, RabbitMqConsts.ExchangeName, "*");
         }
 
         private Task PublishAsync<TMessage>(TMessage body, string exchange, string routingKey)
-        where TMessage : Message
+            where TMessage : Message
         {
             try
             {
