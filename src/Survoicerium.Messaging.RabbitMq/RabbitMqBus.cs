@@ -1,23 +1,19 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using RabbitMQ.Client;
+using Survoicerium.Messaging.Events;
 using Survoicerium.Messaging.Serialization;
 
 namespace Survoicerium.Messaging.RabbitMq
 {
-    public abstract class RabbitMqExchangeSender<T>
+    public class RabbitMqBus : IMessageBus
     {
         private IModel _channel;
         private readonly IMessageSerializer _serializer;
 
-        protected abstract string ExchangeName { get; }
-        protected abstract string RoutingKey { get; }
-
-        protected RabbitMqExchangeSender(string rabbitHostName, string rabbitLogin, string rabbitPassword, IMessageSerializer serializer)
+        public RabbitMqBus(string rabbitHostName, string rabbitLogin, string rabbitPassword, IMessageSerializer serializer)
         {
             _serializer = serializer;
-
             var connectionFactory = new ConnectionFactory
             {
                 HostName = rabbitHostName,
@@ -32,30 +28,34 @@ namespace Survoicerium.Messaging.RabbitMq
             var connection = connectionFactory.CreateConnection();
             connection.ConnectionShutdown += ConnectionShutdown;
             _channel = connection.CreateModel();
-            _channel.ExchangeDeclare(ExchangeName, ExchangeType.Topic, true);
         }
 
-        protected void SendInternal(T body, string messageId, [CallerMemberName]string callerName = "")
+        public Task PublishAsync<TMessage>(TMessage body)
+           where TMessage : Message
+        {
+            return PublishAsync(body, RabbitMqConsts.ExchangeName, "*");
+        }
+
+        private Task PublishAsync<TMessage>(TMessage body, string exchange, string routingKey)
+        where TMessage : Message
         {
             try
             {
                 byte[] data = _serializer.Serialize(body);
                 var properties = new RabbitMQ.Client.Framing.BasicProperties()
                 {
-                    MessageId = messageId
+                    MessageId = typeof(TMessage).Name,
+                    CorrelationId = body.CorrelationId
                 };
 
-                _channel.BasicPublish(ExchangeName, RoutingKey, properties, data);
+                _channel.BasicPublish(exchange, routingKey, properties, data);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
-        }
 
-        protected Task SendInternalAsync(T body, string messageId, [CallerMemberName]string callerName = "")
-        {
-            return Task.Factory.StartNew(() => SendInternal(body, messageId, callerName));
+            return Task.CompletedTask;
         }
 
         private void ConnectionShutdown(object sender, ShutdownEventArgs e)

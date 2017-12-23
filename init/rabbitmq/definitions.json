@@ -26,7 +26,14 @@
     "policies": [],
     "queues": [
         {
-            "name": "Survoicerium_Events",
+            "name": "survoicerium.main.gameapi",
+            "vhost": "/",
+            "durable": true,
+            "auto_delete": false,
+            "arguments": {}
+        },
+		{
+            "name": "survoicerium.main.discordbot",
             "vhost": "/",
             "durable": true,
             "auto_delete": false,
@@ -35,7 +42,7 @@
     ],
     "exchanges": [
         {
-            "name": "survoicerium.events",
+            "name": "survoicerium.main",
             "vhost": "/",
             "type": "topic",
             "durable": true,
@@ -46,9 +53,17 @@
     ],
     "bindings": [
         {
-            "source": "survoicerium.events",
+            "source": "survoicerium.main",
             "vhost": "/",
-            "destination": "Survoicerium_Events",
+            "destination": "survoicerium.main.gameapi",
+            "destination_type": "queue",
+            "routing_key": "*",
+            "arguments": {}
+        },
+		{
+            "source": "survoicerium.main",
+            "vhost": "/",
+            "destination": "survoicerium.main.discordbot",
             "destination_type": "queue",
             "routing_key": "*",
             "arguments": {}

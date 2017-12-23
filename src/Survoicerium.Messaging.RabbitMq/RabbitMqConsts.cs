@@ -2,8 +2,8 @@
 {
     public class RabbitMqConsts
     {
-        public const string EventsExchangeName = "survoicerium.events";
-        public const string EventsRoutingKey = "event";
-        public const string GenericEventQueueName = "Survoicerium_Events";
+        public const string ExchangeName = "survoicerium.main";
+        public const string GameApiQueueName = "survoicerium.main.gameapi";
+        public const string DiscordBotQueueName = "survoicerium.main.discordbot";
     }
 }

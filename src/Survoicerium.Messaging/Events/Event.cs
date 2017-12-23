@@ -1,7 +1,12 @@
-﻿namespace Survoicerium.Messaging.Events
+﻿using System;
+
+namespace Survoicerium.Messaging.Events
 {
-    public abstract class Event : IEvent
+    public abstract class Event : Message
     {
-        public string SourceId { get; set; }
+        public Event()
+        {
+            CorrelationId = Guid.NewGuid().ToString();
+        }
     }
 }

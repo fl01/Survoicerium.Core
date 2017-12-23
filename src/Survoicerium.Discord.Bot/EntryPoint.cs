@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Survoicerium.InternalConfigurationApiClient;
+using Survoicerium.Messaging;
 using Survoicerium.Messaging.RabbitMq;
 using Survoicerium.Messaging.Serialization;
 
@@ -17,10 +18,11 @@ namespace Survoicerium.Discord.Bot
             var configClient = InternalConfigurationApiClientFactory.Create(GetConfiguration().GetValue<string>("System:InternalConfiguration:Host"), TimeSpan.FromSeconds(5), 5);
             var systemConfig = await configClient.GetConfigurationAsync();
 
-            var eventChannel = new RabbitMqEventChannel(systemConfig.MessageQueue.Host, systemConfig.MessageQueue.User, systemConfig.MessageQueue.Password, new JsonSerializer(), RabbitMqConsts.GenericEventQueueName);
-            var eventBus = new RabbitMqEventBus(systemConfig.MessageQueue.Host, systemConfig.MessageQueue.User, systemConfig.MessageQueue.Password, new JsonSerializer());
-            var svc = new DiscordService(systemConfig.DiscordBot.ApiKey, eventChannel, eventBus);
-            eventChannel.Start();
+            // TODO : ideally queue name should be read from InternalConfigurationApi
+            IMessageChannel messageChannel = new RabbitMqChannel(systemConfig.MessageQueue.Host, systemConfig.MessageQueue.User, systemConfig.MessageQueue.Password, new JsonSerializer(), RabbitMqConsts.DiscordBotQueueName);
+            IMessageBus messageBus = new RabbitMqBus(systemConfig.MessageQueue.Host, systemConfig.MessageQueue.User, systemConfig.MessageQueue.Password, new JsonSerializer());
+            var svc = new DiscordService(systemConfig.DiscordBot.ApiKey, messageChannel, messageBus);
+            messageChannel.Start();
 
             await svc.ConnectAsync();
             await Task.Delay(-1);

@@ -54,10 +54,11 @@ namespace Survoicerium.GameApi
             });
 
             var nameService = new NameService();
-            var channel = new RabbitMqEventChannel(sysConfig.MessageQueue.Host, sysConfig.MessageQueue.User, sysConfig.MessageQueue.Password, new JsonSerializer(), RabbitMqConsts.GenericEventQueueName);
-            var bus = new RabbitMqEventBus(sysConfig.MessageQueue.Host, sysConfig.MessageQueue.User, sysConfig.MessageQueue.Password, new JsonSerializer());
-            var gameService = new GameService(nameService, bus, channel);
-            channel.Start();
+            // TODO : ideally queue name should be read from InternalConfigurationApi
+            IMessageChannel messageChannel = new RabbitMqChannel(sysConfig.MessageQueue.Host, sysConfig.MessageQueue.User, sysConfig.MessageQueue.Password, new JsonSerializer(), RabbitMqConsts.GameApiQueueName);
+            IMessageBus messageBus = new RabbitMqBus(sysConfig.MessageQueue.Host, sysConfig.MessageQueue.User, sysConfig.MessageQueue.Password, new JsonSerializer());
+            var gameService = new GameService(nameService, messageBus, messageChannel);
+            messageChannel.Start();
             services
                 .RegisterApiService(sysConfig.UsersDb.ConnectionString, sysConfig.UsersDb.DbName, sysConfig.UsersDb.CollectionName)
                 .AddSingleton<IGameService>(gameService)

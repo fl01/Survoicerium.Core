@@ -13,11 +13,11 @@ namespace Survoicerium.Core
     public class GameService : IGameService
     {
         private readonly INameService _hashService;
-        private readonly IEventBus _eventBus;
+        private readonly IMessageBus _eventBus;
         private ConcurrentDictionary<string, Channel> _activeChannels = new ConcurrentDictionary<string, Channel>();
         private readonly TimeSpan _expiredChannelWatcherDelay = TimeSpan.FromSeconds(30);
 
-        public GameService(INameService hashService, IEventBus eventBus, IEventChannel eventChannel)
+        public GameService(INameService hashService, IMessageBus eventBus, IMessageChannel eventChannel)
         {
             _hashService = hashService;
             _eventBus = eventBus;
@@ -40,7 +40,9 @@ namespace Survoicerium.Core
 
             _activeChannels.AddOrUpdate(channel.Name, channel, (k, v) =>
             {
-                v.Expiry = GetChannelExpiry();
+                // should not be updated in case channel is already active
+                //v.Expiry = GetChannelExpiry()
+
                 v.Users.Add(game.User);
                 return v;
             });
