@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using RabbitMQ.Client;
 using Survoicerium.Messaging.Events;
@@ -25,9 +26,7 @@ namespace Survoicerium.Messaging.RabbitMq
                 NetworkRecoveryInterval = TimeSpan.FromSeconds(1.0)
             };
 
-            var connection = connectionFactory.CreateConnection();
-            connection.ConnectionShutdown += ConnectionShutdown;
-            _channel = connection.CreateModel();
+            TryInitialize(connectionFactory);
         }
 
         public Task PublishAsync<TMessage>(TMessage body)
@@ -58,9 +57,26 @@ namespace Survoicerium.Messaging.RabbitMq
             return Task.CompletedTask;
         }
 
-        private void ConnectionShutdown(object sender, ShutdownEventArgs e)
+        private bool TryInitialize(ConnectionFactory factory)
         {
-            // TODO : logger
+            int maxAttempts = 5;
+            int currentAttempt = 1;
+            while (currentAttempt++ <= maxAttempts)
+            {
+                try
+                {
+                    IConnection connection = factory.CreateConnection();
+                    _channel = connection.CreateModel();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    Thread.Sleep(TimeSpan.FromSeconds(5));
+                }
+            }
+
+            return false;
         }
     }
 }

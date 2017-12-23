@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -56,15 +57,7 @@ namespace Survoicerium.Messaging.RabbitMq
                 NetworkRecoveryInterval = TimeSpan.FromSeconds(5)
             };
 
-            _connection = connectionFactory.CreateConnection();
-            _connection.ConnectionShutdown += ConnectionShutdown;
-            _channel = _connection.CreateModel();
-
-            var consumer = new EventingBasicConsumer(_channel);
-
-            consumer.Received += OnMessageReceived;
-            consumer.Shutdown += HandleShutdown;
-            _channel.BasicConsume(_queueName, false, consumer);
+            TryInitialize(connectionFactory);
         }
 
         private void HandleShutdown(object sender, ShutdownEventArgs e)
@@ -75,6 +68,34 @@ namespace Survoicerium.Messaging.RabbitMq
         private void ConnectionShutdown(object sender, ShutdownEventArgs e)
         {
             // TODO : logs
+        }
+
+        private bool TryInitialize(ConnectionFactory factory)
+        {
+            int maxAttempts = 5;
+            int currentAttempt = 1;
+            while (currentAttempt++ <= maxAttempts)
+            {
+                try
+                {
+                    _connection = factory.CreateConnection();
+                    _channel = _connection.CreateModel();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    Thread.Sleep(TimeSpan.FromSeconds(5));
+                }
+
+                var consumer = new EventingBasicConsumer(_channel);
+                consumer.Received += OnMessageReceived;
+                consumer.Shutdown += HandleShutdown;
+                _channel.BasicConsume(_queueName, false, consumer);
+                _connection.ConnectionShutdown += ConnectionShutdown;
+                return true;
+            }
+
+            return false;
         }
 
         private void OnMessageReceived(object sender, BasicDeliverEventArgs deliveryArgs)
