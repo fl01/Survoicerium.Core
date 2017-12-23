@@ -60,7 +60,7 @@ namespace Survoicerium.GameApi
             var gameService = new GameService(nameService, messageBus, messageChannel);
             messageChannel.Start();
             services
-                .RegisterApiService(sysConfig.UsersDb.ConnectionString, sysConfig.UsersDb.DbName, sysConfig.UsersDb.CollectionName)
+                .RegisterApiService(sysConfig.UsersDb.DbHost, sysConfig.UsersDb.DbName, sysConfig.UsersDb.CollectionName, sysConfig.UsersDb.User, sysConfig.UsersDb.Password)
                 .AddSingleton<IGameService>(gameService)
                 .AddScoped<IAuthorizationHandler, ApiKeyHandler>();
 
