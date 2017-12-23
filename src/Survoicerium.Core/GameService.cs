@@ -74,7 +74,7 @@ namespace Survoicerium.Core
 
         private long GetChannelExpiry()
         {
-            return DateTimeOffset.UtcNow.AddMinutes(30).ToUnixTimeSeconds();
+            return DateTimeOffset.UtcNow.AddMinutes(45).ToUnixTimeSeconds();
         }
 
         private void RunExpiredChannelWatcher()
