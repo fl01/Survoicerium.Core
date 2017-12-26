@@ -42,7 +42,6 @@ namespace Survoicerium.Frontend.Pages
                 ErrorMessage = "Something went wrong. Please try again later";
                 return;
             }
-
             else if (string.IsNullOrEmpty(code))
             {
                 await BeginNewKeyCreation(state);

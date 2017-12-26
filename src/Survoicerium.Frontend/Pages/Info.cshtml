@@ -70,10 +70,39 @@
                     <a href="#" class="ing">Q: Usage guide</a>
                 </h4>
             </div>
-            <div id="question4" class="panel-collapse collapse" style="height: 0px;">
+            <div id="question4" class="panel-collapse collapse" style="height: 0px; margin-left:10px;">
                 <div class="panel-body">
-                    <h5><span class="label label-primary">Answer</span></h5>
-                    <p>INSERT GUIDE HERE</p>
+                    <h5>
+                        <span class="label label-primary">Answer</span>
+                        <button class="btn-success" style="border-radius:4px; padding:3px;" data-toggle="collapse" data-target="#en-usage,#ru-usage">English</button>
+                    </h5>
+                    <div id="en-usage" class="collapse">
+                        <ol>
+
+                            <li><p>Download & open desktop client</p></li>
+                            <li><p>Get api key (through client or web, it doesn't matter)</p></li>
+                            <li><p>Set api key & press Ok. If everything is ok you will see green cloud instead of red one</p></li>
+                            <li><p>Join discord server <b><a href="https://discord.gg/wtc5sKH">https://discord.gg/wtc5sKH</a></b></p></li>
+                            <li><p>Join 'WaitingRoom' (discord bot can't transfer you between voice channels unless you are already in a voice channel)</p></li>
+                            <li><p>Press 'Start' button in desktop client (it will analyze your survarium traffic and wait for packet with a game server data)</p></li>
+                            <li><p>Join game in Survarium</p></li>
+                        </ol>
+                        P.S. Upon joining another game you will be automatically transferred to new voice channel, i.e. there is no need to manually join 'WaitingRoom' after each game
+                    </div>
+                    <div id="ru-usage" class="collapse in">
+                        <ol>
+                            <li><p>Скачать и запустить десктопный клиент</p></li>
+                            <li><p>Получить ApiKey используя десктопный клиент (кнопка GetApiKey) или на сайте (иконка '+' на главной странице)</p></li>
+                            <li><p>Скопировать и вставить ApiKey в десктопный клиент</p></li>
+                            <li><p>Жмем "ОК" и ждем пока тучка позеленеет</p></li>
+                            <li><p>Заходим на сервер дискорда <b><a href="https://discord.gg/wtc5sKH">https://discord.gg/wtc5sKH</a></b></p></li>
+                            <li><p>На сервере дискорда заходим в комнату ожидания 'WaitingRoom' (в ней войс чат отключен для всех). Из-за специфики дискорда это обязательное требование, чтобы бот смог вас перекинуть в другой войс чат</li>
+                            <li><p>Жмакаем в десктопном клиенте Start и в Survarium заходим в матч (клиент будет ждать пакета входа на гейм сервер от клиента Survarium и слать его на сервер)</p></li>
+                            <li><p>При входе в матч бот в Discord вас автоматически закинет в канал с вашими тиммейтами, которые тоже сидели в 'WaitingRoom'</p></li>
+                            <li><p>Eсли вы случайно ливнули из румы вашей игры, можно снова зайти в 'WaitingRoom' и в личном сообщении боту Survoicerium (в списке пользователей канала) написать "!join" и вас автоматически перекинет назад в канал с вашей игрой</p></li>
+                        </ol>
+                        P.S. При подключении к новой игре вы будете автоматически перекинуты из войс канала прошлой игры в войс канал новой игры, т.е. нет нужды заходить вручную в 'WaitingRoom' после каждой игры
+                    </div>
                 </div>
             </div>
         </div>
