@@ -33,7 +33,7 @@ namespace Survoicerium.Frontend
             services.AddHealthChecks(context => context.AddUrlCheck("https://google.com"));
 
             services
-                .RegisterApiService(sysConfig.UsersDb.ConnectionString, sysConfig.UsersDb.DbName, sysConfig.UsersDb.CollectionName)
+                .RegisterApiService(sysConfig.UsersDb.DbHost, sysConfig.UsersDb.DbName, sysConfig.UsersDb.CollectionName, sysConfig.UsersDb.User, sysConfig.UsersDb.Password)
                 .AddScoped<DiscordApiClient>(builder =>
                 {
                     return new DiscordApiClient(new SimpleHttpClient(), sysConfig.DiscordOAuth.ClientId, sysConfig.DiscordOAuth.ClientSecret);

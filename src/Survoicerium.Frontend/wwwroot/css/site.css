@@ -86,6 +86,13 @@ a, a:hover, a:active, a:visited {
     padding: 0 20px 10px;
 }
 
+    .offer-content .a, a:hover, a:active, a:visited, a:focus {
+        border: none;
+        outline: none;
+        text-decoration: none;
+        color: inherit;
+    }
+
 @media (min-width: 487px) {
     .container {
         max-width: 750px;

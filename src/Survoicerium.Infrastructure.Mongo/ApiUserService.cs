@@ -12,7 +12,17 @@ namespace Survoicerium.Infrastructure.Mongo
 
         public ApiUserService(ApiUserServiceOptions options)
         {
-            var client = new MongoClient(options.ConnectionString);
+            string connectionString;
+            if (!string.IsNullOrEmpty(options.User) && !string.IsNullOrEmpty(options.Password))
+            {
+                connectionString = $"mongodb://{options.User}:{options.Password}@{options.DbHost}";
+            }
+            else
+            {
+                connectionString = $"mongodb://{options.DbHost}";
+            }
+
+            var client = new MongoClient(connectionString);
             var database = client.GetDatabase(options.DbName);
             _users = new Lazy<IMongoCollection<ApiUser>>(() => database.GetCollection<ApiUser>(options.CollectionName));
         }

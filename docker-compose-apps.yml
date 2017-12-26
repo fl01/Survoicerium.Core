@@ -1,0 +1,42 @@
+version: '3'
+services:
+    frontend:
+        image: survoicerium/frontend:latest
+        build:
+           context: .
+           dockerfile: Dockerfile.Frontend
+        ports:
+          - "5001:5001"
+        environment:
+          - ASPNETCORE_ENVIRONMENT=Release-CI
+        networks:
+          - survoicerium
+    backend:
+        image: survoicerium/backend:latest
+        depends_on:
+          - rabbitmq
+          - mongo
+        build:
+           context: .
+           dockerfile: Dockerfile.GameApi
+        ports:
+          - "5000:5000"
+        environment:
+          - ASPNETCORE_ENVIRONMENT=Release-CI
+        networks:
+          - survoicerium
+    discordbot:
+        image: survoicerium/discordbot:latest
+        depends_on:
+          - rabbitmq
+          - mongo
+        build:
+           context: .
+           dockerfile: Dockerfile.DiscordBot
+        environment:
+          - ASPNETCORE_ENVIRONMENT=Release-CI
+        networks:
+          - survoicerium
+networks:
+  survoicerium:
+    driver: bridge

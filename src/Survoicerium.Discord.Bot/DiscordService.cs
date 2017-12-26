@@ -14,7 +14,7 @@ namespace Survoicerium.Discord.Bot
     {
         private DiscordSocketClient _client;
         private readonly string _token;
-        private readonly IEventBus _eventBus;
+        private readonly IMessageBus _eventBus;
         private readonly object _getChannelLock = new object();
 
         public const ulong LogsTextChannelId = 389023517003218954;
@@ -24,13 +24,13 @@ namespace Survoicerium.Discord.Bot
         private SocketTextChannel LogsTextChannel { get; set; }
         private SocketGuild DefaultServer { get; set; }
 
-        public DiscordService(string token, IEventChannel eventChannel, IEventBus eventBus)
+        public DiscordService(string token, Messaging.IMessageChannel messageChannel, IMessageBus messageBus)
         {
             _token = token;
-            _eventBus = eventBus;
+            _eventBus = messageBus;
 
-            eventChannel.On<OnJoinedGameEvent>(x => HandleIfReady<OnJoinedGameEvent>(x, OnJoinedGameEventReceived));
-            eventChannel.On<OnChannelExpiredEvent>(x => HandleIfReady<OnChannelExpiredEvent>(x, OnChannelExpiredReceived));
+            messageChannel.On<OnJoinedGameEvent>(x => HandleIfReady<OnJoinedGameEvent>(x, OnJoinedGameEventReceived));
+            messageChannel.On<OnChannelExpiredEvent>(x => HandleIfReady<OnChannelExpiredEvent>(x, OnChannelExpiredReceived));
         }
 
         public async Task ConnectAsync()
@@ -47,6 +47,7 @@ namespace Survoicerium.Discord.Bot
                     if ((DateTime.UtcNow - start).TotalMinutes >= 5)
                     {
                         // TODO : logs or notify somehow
+                        Console.WriteLine("Failed to initialize after 5 minutes");
                         break;
                     }
 
