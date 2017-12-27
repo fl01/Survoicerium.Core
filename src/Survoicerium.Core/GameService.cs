@@ -1,51 +1,49 @@
-﻿using Survoicerium.Core.Dto;
-using Survoicerium.Core.Hash;
-using Survoicerium.Messaging;
-using Survoicerium.Messaging.Events;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Survoicerium.Core.Abstractions;
+using Survoicerium.Core.Dto;
+using Survoicerium.Core.Hash;
+using Survoicerium.Messaging;
+using Survoicerium.Messaging.Events;
 
 namespace Survoicerium.Core
 {
     public class GameService : IGameService
     {
-        private readonly INameService _hashService;
+        private readonly IHashService _hashService;
         private readonly IMessageBus _eventBus;
-        private ConcurrentDictionary<string, Channel> _activeChannels = new ConcurrentDictionary<string, Channel>();
-        private readonly TimeSpan _expiredChannelWatcherDelay = TimeSpan.FromSeconds(30);
+        private readonly IChannelPersistence _channelPersistence;
+        private readonly TimeSpan _expiredChannelWatcherDelay = TimeSpan.FromSeconds(60);
 
-        public GameService(INameService hashService, IMessageBus eventBus, IMessageChannel eventChannel)
+        public GameService(IHashService hashService, IMessageBus eventBus, IMessageChannel eventChannel, IChannelPersistence channelPersistence)
         {
             _hashService = hashService;
             _eventBus = eventBus;
+            _channelPersistence = channelPersistence;
 
             // TODO : this should be moved to a separate worker, but for now it is fine
             eventChannel.On<OnChatRequestToJoinVoiceChannel>(HandleOnChatRequestToJoinVoiceChannel);
+            eventChannel.Start();
 
             Task.Factory.StartNew(RunExpiredChannelWatcher, TaskCreationOptions.LongRunning);
         }
 
         public async Task JoinGameAsync(GameInfoDto game)
         {
-            string channelName = _hashService.GenerateChannelName(game.Hash);
+            (Guid Id, string Name) channelIdentifier = _hashService.GenerateChannelIdentifier(game.Hash);
+
             var channel = new Channel()
             {
+                Id = channelIdentifier.Id,
                 Expiry = GetChannelExpiry(),
-                Name = channelName,
-                Users = { game.User }
+                Name = channelIdentifier.Name
             };
 
-            _activeChannels.AddOrUpdate(channel.Name, channel, (k, v) =>
-            {
-                // should not be updated in case channel is already active
-                //v.Expiry = GetChannelExpiry()
-
-                v.Users.Add(game.User);
-                return v;
-            });
+            await _channelPersistence.PersistChannelAsync(channel);
+            await _channelPersistence.PersistUserInChannelAsync(channel.Id, game.User);
 
             await SendOnJoinedGameEvent(channel.Name, game.User.Discord.UserId);
         }
@@ -54,10 +52,11 @@ namespace Survoicerium.Core
         {
             var request = args as OnChatRequestToJoinVoiceChannel;
 
-            var activeChannel = _activeChannels.FirstOrDefault(c => c.Value.Users.Any(u => u.Discord.UserId == request.UserId));
-            if (!string.IsNullOrEmpty(activeChannel.Key))
+            var userChannels = await _channelPersistence.GetDiscordUserChannelsAsync(request.UserId);
+            var lastActiveChannel = userChannels.OrderByDescending(x => x.Expiry).FirstOrDefault();
+            if (lastActiveChannel != null)
             {
-                await SendOnJoinedGameEvent(activeChannel.Key, request.UserId);
+                await SendOnJoinedGameEvent(lastActiveChannel.Name, request.UserId);
             }
         }
 
@@ -77,23 +76,18 @@ namespace Survoicerium.Core
             return DateTimeOffset.UtcNow.AddMinutes(45).ToUnixTimeSeconds();
         }
 
-        private void RunExpiredChannelWatcher()
+        private async void RunExpiredChannelWatcher()
         {
             while (true)
             {
                 Thread.Sleep(_expiredChannelWatcherDelay);
+                var expiredChannels = await _channelPersistence.GetExpiredChannelsAsync(DateTimeOffset.UtcNow.ToUnixTimeSeconds());
 
-                long currentTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-                var expiredChannels = _activeChannels.Where(k => k.Value.Expiry < currentTimestamp)
-                    .Select(x => x.Key)
-                    .ToList();
-
-                foreach (string channelName in expiredChannels)
+                foreach (Channel channel in expiredChannels)
                 {
                     // TODO : log & notify if failed to remove
-                    _activeChannels.TryRemove(channelName, out Channel value);
-
-                    _eventBus.PublishAsync(new OnChannelExpiredEvent() { ChannelName = channelName }).GetAwaiter().GetResult();
+                    await _channelPersistence.DeleteChannelAsync(channel.Id);
+                    await _eventBus.PublishAsync(new OnChannelExpiredEvent() { ChannelName = channel.Name });
                 }
             }
         }

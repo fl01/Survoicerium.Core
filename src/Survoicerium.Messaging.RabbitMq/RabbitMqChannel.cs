@@ -21,6 +21,7 @@ namespace Survoicerium.Messaging.RabbitMq
 
         private IConnection _connection;
         private IModel _channel;
+        private bool _isInitialized = false;
 
         public RabbitMqChannel(string host, string user, string password, IMessageSerializer serializer, string queueName)
         {
@@ -46,6 +47,11 @@ namespace Survoicerium.Messaging.RabbitMq
 
         public void Start()
         {
+            if (_isInitialized)
+            {
+                return;
+            }
+
             var connectionFactory = new ConnectionFactory
             {
                 HostName = _host,
@@ -57,7 +63,7 @@ namespace Survoicerium.Messaging.RabbitMq
                 NetworkRecoveryInterval = TimeSpan.FromSeconds(5)
             };
 
-            TryInitialize(connectionFactory);
+            _isInitialized = TryInitialize(connectionFactory);
         }
 
         private void HandleShutdown(object sender, ShutdownEventArgs e)

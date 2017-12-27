@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Survoicerium.Core.Dto;
 
-namespace Survoicerium.Core
+namespace Survoicerium.Core.Abstractions
 {
     public interface IApiUserService
     {

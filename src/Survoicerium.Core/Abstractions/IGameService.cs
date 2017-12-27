@@ -1,7 +1,7 @@
 ﻿using Survoicerium.Core.Dto;
 using System.Threading.Tasks;
 
-namespace Survoicerium.Core
+namespace Survoicerium.Core.Abstractions
 {
     public interface IGameService
     {

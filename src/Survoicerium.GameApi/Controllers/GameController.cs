@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Survoicerium.Core;
+using Survoicerium.Core.Abstractions;
 using Survoicerium.Core.Dto;
 using Survoicerium.GameApi.ApiModels.RequestModels;
 using Survoicerium.GameApi.Authorization;

@@ -1,6 +1,6 @@
 ﻿namespace Survoicerium.Infrastructure.Mongo
 {
-    public class ApiUserServiceOptions
+    public class MongoDbOptions
     {
         public string DbHost { get; set; }
 
@@ -12,7 +12,7 @@
 
         public string Password { get; set; }
 
-        public ApiUserServiceOptions(string dbHost, string dbName, string collectionName, string user, string password)
+        public MongoDbOptions(string dbHost, string dbName, string collectionName, string user, string password)
         {
             DbHost = dbHost;
             DbName = dbName;

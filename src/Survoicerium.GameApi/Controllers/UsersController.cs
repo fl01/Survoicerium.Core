@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Survoicerium.Core;
+using Survoicerium.Core.Abstractions;
 using Survoicerium.GameApi.ApiModels.ResponseModels;
 using Survoicerium.GameApi.Authorization;
 

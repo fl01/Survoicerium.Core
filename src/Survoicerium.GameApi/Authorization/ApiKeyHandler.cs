@@ -1,10 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
-using Survoicerium.Core;
+using Survoicerium.Core.Abstractions;
 
 namespace Survoicerium.GameApi.Authorization
 {

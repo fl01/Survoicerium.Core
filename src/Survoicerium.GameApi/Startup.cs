@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Survoicerium.Core;
+using Survoicerium.Core.Abstractions;
 using Survoicerium.Core.Hash;
 using Survoicerium.GameApi.Authorization;
 using Survoicerium.GameApi.Filters;
@@ -53,15 +54,14 @@ namespace Survoicerium.GameApi
                 opt.AddPolicy(nameof(ApiKeyRequirement), policy => policy.Requirements.Add(new ApiKeyRequirement()));
             });
 
-            var nameService = new NameService();
-            // TODO : ideally queue name should be read from InternalConfigurationApi
-            IMessageChannel messageChannel = new RabbitMqChannel(sysConfig.MessageQueue.Host, sysConfig.MessageQueue.User, sysConfig.MessageQueue.Password, new JsonSerializer(), RabbitMqConsts.GameApiQueueName);
-            IMessageBus messageBus = new RabbitMqBus(sysConfig.MessageQueue.Host, sysConfig.MessageQueue.User, sysConfig.MessageQueue.Password, new JsonSerializer());
-            var gameService = new GameService(nameService, messageBus, messageChannel);
-            messageChannel.Start();
             services
                 .RegisterApiService(sysConfig.UsersDb.DbHost, sysConfig.UsersDb.DbName, sysConfig.UsersDb.CollectionName, sysConfig.UsersDb.User, sysConfig.UsersDb.Password)
-                .AddSingleton<IGameService>(gameService)
+                .AddScoped<IGameService, GameService>()
+                .AddScoped<IHashService>(s => new HashService(sysConfig.ChannelHashEntropy))
+                .AddScoped<IChannelPersistence>(s => new ChannelPersistence(new MongoDbOptions(sysConfig.ChannelsDb.DbHost, sysConfig.ChannelsDb.DbName, sysConfig.ChannelsDb.CollectionName, sysConfig.ChannelsDb.User, sysConfig.ChannelsDb.Password)))
+                .AddSingleton<IMessageBus>(s => new RabbitMqBus(sysConfig.MessageQueue.Host, sysConfig.MessageQueue.User, sysConfig.MessageQueue.Password, new JsonSerializer()))
+                // TODO : ideally queue name should be read from InternalConfigurationApi
+                .AddSingleton<IMessageChannel>(s => new RabbitMqChannel(sysConfig.MessageQueue.Host, sysConfig.MessageQueue.User, sysConfig.MessageQueue.Password, new JsonSerializer(), RabbitMqConsts.GameApiQueueName))
                 .AddScoped<IAuthorizationHandler, ApiKeyHandler>();
 
             services.AddHealthChecks(context => context.AddUrlCheck("https://google.com"));

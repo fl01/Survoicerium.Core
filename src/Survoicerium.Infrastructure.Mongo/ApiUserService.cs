@@ -2,15 +2,16 @@
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using Survoicerium.Core;
+using Survoicerium.Core.Abstractions;
 using Survoicerium.Core.Dto;
 
 namespace Survoicerium.Infrastructure.Mongo
 {
     public class ApiUserService : IApiUserService
     {
-        private static Lazy<IMongoCollection<ApiUser>> _users = null;
+        private Lazy<IMongoCollection<ApiUser>> _users = null;
 
-        public ApiUserService(ApiUserServiceOptions options)
+        public ApiUserService(MongoDbOptions options)
         {
             string connectionString;
             if (!string.IsNullOrEmpty(options.User) && !string.IsNullOrEmpty(options.Password))
