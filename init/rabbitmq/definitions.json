@@ -26,7 +26,7 @@
     "policies": [],
     "queues": [
         {
-            "name": "survoicerium.main.gameapi",
+            "name": "survoicerium.main.worker",
             "vhost": "/",
             "durable": true,
             "auto_delete": false,
@@ -55,7 +55,7 @@
         {
             "source": "survoicerium.main",
             "vhost": "/",
-            "destination": "survoicerium.main.gameapi",
+            "destination": "survoicerium.main.worker",
             "destination_type": "queue",
             "routing_key": "*",
             "arguments": {}

@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survoicerium.Core", "Survoi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survoicerium.Discord.ApiClient", "Survoicerium.Discord.ApiClient\Survoicerium.Discord.ApiClient.csproj", "{09C7000F-D117-4D53-89E8-CB0E60C4C625}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Survoicerium.Worker", "Survoicerium.Worker\Survoicerium.Worker.csproj", "{D10FD04D-FC0A-4231-9972-F70F7F44330E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{09C7000F-D117-4D53-89E8-CB0E60C4C625}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09C7000F-D117-4D53-89E8-CB0E60C4C625}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09C7000F-D117-4D53-89E8-CB0E60C4C625}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D10FD04D-FC0A-4231-9972-F70F7F44330E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D10FD04D-FC0A-4231-9972-F70F7F44330E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D10FD04D-FC0A-4231-9972-F70F7F44330E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D10FD04D-FC0A-4231-9972-F70F7F44330E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -60,8 +60,6 @@ namespace Survoicerium.GameApi
                 .AddScoped<IHashService>(s => new HashService(sysConfig.ChannelHashEntropy))
                 .AddScoped<IChannelPersistence>(s => new ChannelPersistence(new MongoDbOptions(sysConfig.ChannelsDb.DbHost, sysConfig.ChannelsDb.DbName, sysConfig.ChannelsDb.CollectionName, sysConfig.ChannelsDb.User, sysConfig.ChannelsDb.Password)))
                 .AddSingleton<IMessageBus>(s => new RabbitMqBus(sysConfig.MessageQueue.Host, sysConfig.MessageQueue.User, sysConfig.MessageQueue.Password, new JsonSerializer()))
-                // TODO : ideally queue name should be read from InternalConfigurationApi
-                .AddSingleton<IMessageChannel>(s => new RabbitMqChannel(sysConfig.MessageQueue.Host, sysConfig.MessageQueue.User, sysConfig.MessageQueue.Password, new JsonSerializer(), RabbitMqConsts.GameApiQueueName))
                 .AddScoped<IAuthorizationHandler, ApiKeyHandler>();
 
             services.AddHealthChecks(context => context.AddUrlCheck("https://google.com"));

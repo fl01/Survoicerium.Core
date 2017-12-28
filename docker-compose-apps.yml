@@ -37,6 +37,18 @@ services:
           - ASPNETCORE_ENVIRONMENT=Release-CI
         networks:
           - survoicerium
+    worker:
+        image: survoicerium/worker:latest
+        depends_on:
+          - rabbitmq
+          - mongo
+        build:
+           context: .
+           dockerfile: Dockerfile.Worker
+        environment:
+          - ASPNETCORE_ENVIRONMENT=Release-CI
+        networks:
+          - survoicerium
 networks:
   survoicerium:
     driver: bridge

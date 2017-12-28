@@ -3,7 +3,7 @@
     public class RabbitMqConsts
     {
         public const string ExchangeName = "survoicerium.main";
-        public const string GameApiQueueName = "survoicerium.main.gameapi";
+        public const string WorkerQueueName = "survoicerium.main.worker";
         public const string DiscordBotQueueName = "survoicerium.main.discordbot";
     }
 }
