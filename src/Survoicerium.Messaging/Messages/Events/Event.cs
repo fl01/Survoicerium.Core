@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Survoicerium.Messaging.Events
+namespace Survoicerium.Messaging.Messages.Events
 {
     public abstract class Event : Message
     {

@@ -1,12 +1,12 @@
 ﻿using System;
-using Survoicerium.Messaging.Events;
+using Survoicerium.Messaging.Messages;
 
 namespace Survoicerium.Messaging
 {
     public interface IMessageChannel
     {
-        void On<T>(Action<object> handler)
-            where T : Message;
+        void On<TMessage>(Action<object> handler)
+            where TMessage : Message;
 
         void Start();
     }

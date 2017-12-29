@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Survoicerium.Messaging.Events;
+using Survoicerium.Messaging.Messages;
 
 namespace Survoicerium.Messaging
 {

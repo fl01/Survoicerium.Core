@@ -4,7 +4,7 @@ using Survoicerium.Core.Abstractions;
 using Survoicerium.Core.Dto;
 using Survoicerium.Core.Hash;
 using Survoicerium.Messaging;
-using Survoicerium.Messaging.Events;
+using Survoicerium.Messaging.Messages.Events;
 
 namespace Survoicerium.Core
 {

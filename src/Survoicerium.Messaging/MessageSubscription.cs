@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Survoicerium.Messaging.RabbitMq
+namespace Survoicerium.Messaging
 {
-    public class EventSubscription
+    public class MessageSubscription
     {
         public Type Type { get; set; }
 

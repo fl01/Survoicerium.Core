@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using RabbitMQ.Client;
-using Survoicerium.Messaging.Events;
+using Survoicerium.Messaging.Messages;
 using Survoicerium.Messaging.Serialization;
 
 namespace Survoicerium.Messaging.RabbitMq

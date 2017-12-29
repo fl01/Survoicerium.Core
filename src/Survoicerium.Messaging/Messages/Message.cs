@@ -1,4 +1,4 @@
-﻿namespace Survoicerium.Messaging.Events
+﻿namespace Survoicerium.Messaging.Messages
 {
     public abstract class Message
     {

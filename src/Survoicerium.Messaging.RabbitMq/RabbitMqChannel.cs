@@ -5,14 +5,14 @@ using System.Threading;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using Survoicerium.Messaging.Events;
+using Survoicerium.Messaging.Messages;
 using Survoicerium.Messaging.Serialization;
 
 namespace Survoicerium.Messaging.RabbitMq
 {
     public class RabbitMqChannel : IMessageChannel
     {
-        private List<EventSubscription> _subs = new List<EventSubscription>();
+        private List<MessageSubscription> _subs = new List<MessageSubscription>();
         private readonly IMessageSerializer _serializer;
         private readonly string _host;
         private readonly string _password;
@@ -35,7 +35,7 @@ namespace Survoicerium.Messaging.RabbitMq
         public void On<TMessage>(Action<object> handler)
             where TMessage : Message
         {
-            var sub = new EventSubscription()
+            var sub = new MessageSubscription()
             {
                 Type = typeof(TMessage),
                 MessageId = typeof(TMessage).Name,

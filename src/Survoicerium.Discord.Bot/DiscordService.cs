@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using Survoicerium.Messaging;
-using Survoicerium.Messaging.Events;
+using Survoicerium.Messaging.Messages.Events;
 
 namespace Survoicerium.Discord.Bot
 {

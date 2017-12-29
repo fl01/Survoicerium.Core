@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Survoicerium.Core;
 using Survoicerium.Core.Abstractions;
 using Survoicerium.Messaging;
-using Survoicerium.Messaging.Events;
+using Survoicerium.Messaging.Messages.Events;
 
 namespace Survoicerium.Worker
 {
