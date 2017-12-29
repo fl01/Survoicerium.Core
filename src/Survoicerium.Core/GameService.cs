@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Survoicerium.Core.Abstractions;
 using Survoicerium.Core.Dto;
-using Survoicerium.Core.Hash;
+using Survoicerium.Core.Models;
 using Survoicerium.Messaging;
 using Survoicerium.Messaging.Messages.Events;
 
@@ -23,13 +23,13 @@ namespace Survoicerium.Core
 
         public async Task JoinGameAsync(GameInfoDto game)
         {
-            (Guid channelId, string channelName) = _hashService.GenerateChannelIdentifier(game.Hash);
+            ChannelIdentifier channelIdentifier = _hashService.GenerateChannelIdentifier(game.Hash);
 
             var channel = new Channel()
             {
-                Id = channelId,
+                Id = channelIdentifier.Id,
                 Expiry = DateTimeOffset.UtcNow.AddMinutes(45).ToUnixTimeSeconds(),
-                Name = channelName
+                Name = channelIdentifier.Name
             };
 
             await _channelPersistence.PersistChannelAsync(channel);

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
+using Survoicerium.Core.Abstractions;
+using Survoicerium.Core.Models;
 
 namespace Survoicerium.Core.Hash
 {
@@ -13,12 +15,12 @@ namespace Survoicerium.Core.Hash
             _entropy = entropy;
         }
 
-        public (Guid, string) GenerateChannelIdentifier(string channelData)
+        public ChannelIdentifier GenerateChannelIdentifier(string channelData)
         {
             string channelName = GenerateChannelName(channelData);
             Guid channelId = GenerateChannelId(channelName);
 
-            return (channelId, channelName);
+            return new ChannelIdentifier(channelId, channelName);
         }
 
         private Guid GenerateChannelId(string channelName)
